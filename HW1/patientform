@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="header-banner">
+        <img src="logo.png" alt="Medical Logo" width="80">
+        <h1>MediQuick Solutions</h1>
+        <p id="current-date"></p>
+    </div>
+
+    <form action="thankyou.html">
+        
+        <h3>Personal Information</h3>
+        <table>
+            <tr>
+                <td>First Name:</td>
+                <td><input type="text" name="fname" maxlength="30" required></td>
+            </tr>
+            <tr>
+                <td>Middle Initial & Last Name:</td>
+                <td>
+                    <input type="text" name="mi" maxlength="1" size="2">
+                    <input type="text" name="lname" maxlength="30" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Date of Birth:</td>
+                <td><input type="date" name="dob" required></td>
+            </tr>
+            <tr>
+                <td>Social Security:</td>
+                <td><input type="password" name="ssn" placeholder="Obscured" maxlength="11"></td>
+            </tr>
+            <tr>
+                <td>Gender:</td>
+                <td>
+                    <input type="radio" name="gender" value="male"> Male
+                    <input type="radio" name="gender" value="female"> Female
+                    <input type="radio" name="gender" value="other"> Other
+                </td>
+            </tr>
+        </table>
+
+        <h3>Contact Information</h3>
+        <table>
+            <tr>
+                <td>Address Line 1:</td>
+                <td><input type="text" name="addr1" maxlength="30"></td>
+            </tr>
+            <tr>
+                <td>City, State, Zip:</td>
+                <td>
+                    <input type="text" name="city" maxlength="30">
+                    <select name="state">
+                        <option value="">Select State</option>
+                        <option value="TX">Texas</option>
+                        <option value="NY">New York</option>
+                        </select>
+                    <input type="text" name="zip" maxlength="10" size="10">
+                </td>
+            </tr>
+            <tr>
+                <td>Email Address:</td>
+                <td><input type="email" name="email" placeholder="name@domain.tld"></td>
+            </tr>
+        </table>
+
+        <h3>Medical History</h3>
+        <table>
+            <tr>
+                <td>Previous Illnesses:</td>
+                <td>
+                    <input type="checkbox" name="illness" value="diabetes"> Diabetes
+                    <input type="checkbox" name="illness" value="heart"> Heart Disease
+                    <input type="checkbox" name="illness" value="asthma"> Asthma
+                    <input type="checkbox" name="illness" value="covid"> Covid-19
+                    <input type="checkbox" name="illness" value="measles"> Measles
+                </td>
+            </tr>
+            <tr>
+                <td>Current Symptoms:</td>
+                <td><textarea name="symptoms" rows="3" cols="50"></textarea></td>
+            </tr>
+            <tr>
+                <td>Health Rating (1-10):</td>
+                <td><input type="range" name="health" min="1" max="10"></td>
+            </tr>
+        </table>
+
+        <h3>Create Account</h3>
+        <table>
+            <tr>
+                <td>User ID:</td>
+                <td><input type="text" name="userid" maxlength="20"></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="pwd"></td>
+            </tr>
+            <tr>
+                <td>Re-enter Password:</td>
+                <td><input type="password" name="pwd_confirm"></td>
+            </tr>
+        </table>
+
+        <div class="buttons">
+            <button type="reset">CLEAR AND START OVER</button>
+            <button type="submit">Submit Registration</button>
+        </div>
+
+    </form>
+
+    <div id="footer">
+        <p>MediQuick Medical | PO BOX 18881 | Sugar Land TX 77496</p>
+        <button type="button">CONTACT US</button>
+    </div>
+
+    <script>
+        const d = new Date();
+        document.getElementById("current-date").innerHTML = "Today is: " + d.toDateString();
+    </script>
+
+</body>
+</html>
