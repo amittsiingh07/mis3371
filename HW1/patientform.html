@@ -1,267 +1,141 @@
+<!--
+Program name: patient-form.html
+Author: Amit Singh
+Date created: 02/19/2026
+Date last edited: 02/19/2026
+Version: 1.0
+Description: Patient Registration Form for MIS3371 Homework 1.
+             Collects personal, contact, insurance, and medical history
+             information from a new patient registering on the website.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<title>Patient Registration Form</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; color: #000; }
-  .form-container { max-width: 720px; margin: 20px auto; padding: 10px 20px; border: 1px solid #ccc; }
-  h1 { text-align: center; font-size: 15px; font-weight: normal; margin: 10px 0 16px; }
-  .section { border: 1px solid #000; margin-bottom: 16px; }
-  .section-title { background: #000; color: #fff; font-weight: bold; font-size: 13px; padding: 4px 8px; }
-  .section-body { padding: 10px 10px 14px; }
-  .row { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
-  .field { display: flex; flex-direction: column; flex: 1; min-width: 80px; }
-  .field label { font-size: 12px; margin-bottom: 3px; }
-  .field input[type="text"],
-  .field input[type="email"],
-  .field input[type="tel"],
-  .field input[type="password"],
-  .field input[type="date"],
-  .field select,
-  .field textarea { border: 1px solid #999; padding: 4px 6px; font-size: 12px; width: 100%; border-radius: 2px; }
-  .field textarea { resize: vertical; }
-  .field input::placeholder { color: #aaa; }
-  .radio-group { display: flex; gap: 14px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
-  .radio-group label { display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer; }
-  .checkbox-group { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
-  .checkbox-group label { display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer; }
-  .field-label { font-size: 12px; margin-top: 10px; margin-bottom: 4px; }
-  .slider-container { margin-top: 8px; }
-  .slider-container input[type="range"] { width: 100%; accent-color: #4a90d9; }
-  .slider-labels { display: flex; justify-content: space-between; font-size: 11px; color: #555; margin-top: 2px; }
-  .btn-row { display: flex; justify-content: space-between; margin-top: 16px; }
-  .btn { padding: 8px 24px; font-size: 13px; font-weight: bold; border: 2px solid #000; background: #fff; cursor: pointer; letter-spacing: 0.5px; }
-  .btn:hover { background: #f0f0f0; }
-  .insurance-fields { margin-top: 8px; }
-  select { appearance: auto; }
-  .field.grow-2 { flex: 2; }
-  .field.grow-3 { flex: 3; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Registration Form</title>
+  <link href="style.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="form-container">
-  <h1>Patient Registration Form</h1>
 
-  <!-- Personal Information -->
-  <div class="section">
-    <div class="section-title">Personal Information</div>
-    <div class="section-body">
-      <div class="row">
-        <div class="field grow-3"><label>First Name*</label><input type="text"></div>
-        <div class="field" style="max-width:80px"><label>MI</label><input type="text" maxlength="3"></div>
-        <div class="field grow-3"><label>Last Name*</label><input type="text"></div>
-        <div class="field grow-2"><label>Date of Birth*</label><input type="text" placeholder="MM/DD/YYYY"></div>
-      </div>
-      <div class="row">
-        <div class="field grow-2"><label>Social Security Number</label><input type="text" placeholder="XXX-XX-XXXX"></div>
-        <div class="field grow-3">
-          <label>Gender</label>
-          <div class="radio-group" style="margin-top:6px">
-            <label><input type="radio" name="gender" value="male"> Male</label>
-            <label><input type="radio" name="gender" value="female"> Female</label>
-            <label><input type="radio" name="gender" value="other"> Other</label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Contact Information -->
-  <div class="section">
-    <div class="section-title">Contact Information</div>
-    <div class="section-body">
-      <div class="row">
-        <div class="field grow-2"><label>Address Line 1*</label><input type="text"></div>
-        <div class="field grow-2"><label>Address Line 2</label><input type="text"></div>
-      </div>
-      <div class="row">
-        <div class="field grow-2"><label>City</label><input type="text"></div>
-        <div class="field grow-2">
-          <label>State</label>
-          <select>
-            <option value="">Select State</option>
-            <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
-            <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
-            <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
-            <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
-            <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
-            <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
-            <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
-            <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
-            <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
-            <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
-            <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
-            <option>VT</option><option>VA</option><option>WA</option><option>WV</option>
-            <option>WI</option><option>WY</option>
-          </select>
-        </div>
-        <div class="field grow-2"><label>Zip Code</label><input type="text"></div>
-      </div>
-      <div class="row">
-        <div class="field grow-2"><label>Home Phone</label><input type="tel" placeholder="(XXX) XXX-XXXX"></div>
-        <div class="field grow-2"><label>Cell Phone*</label><input type="tel" placeholder="(XXX) XXX-XXXX"></div>
-        <div class="field grow-2"><label>Email Address*</label><input type="email"></div>
-      </div>
-      <div style="margin-top:10px">
-        <div class="field-label">Preferred Contact Method</div>
-        <div class="radio-group">
-          <label><input type="radio" name="contact" value="phone"> Phone</label>
-          <label><input type="radio" name="contact" value="email"> Email</label>
-          <label><input type="radio" name="contact" value="text"> Text</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Emergency Contact -->
-  <div class="section">
-    <div class="section-title">Emergency Contact</div>
-    <div class="section-body">
-      <div class="row">
-        <div class="field grow-2"><label>Emergency Contact Name*</label><input type="text"></div>
-        <div class="field grow-2"><label>Relationship*</label><input type="text"></div>
-        <div class="field grow-2"><label>Emergency Phone</label><input type="tel" placeholder="(XXX) XXX-XXXX"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Insurance Information -->
-  <div class="section">
-    <div class="section-title">Insurance Information</div>
-    <div class="section-body">
-      <div class="field-label">Do you have insurance?</div>
-      <div class="radio-group">
-        <label><input type="radio" name="insurance" value="yes" id="ins-yes"> Yes</label>
-        <label><input type="radio" name="insurance" value="no"> No</label>
-      </div>
-      <div class="row insurance-fields" style="margin-top:10px">
-        <div class="field grow-2"><label>Insurance Company</label><input type="text"></div>
-        <div class="field grow-2"><label>Policy Number</label><input type="text"></div>
-        <div class="field grow-2"><label>Group Number</label><input type="text"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Medical History -->
-  <div class="section">
-    <div class="section-title">Medical History</div>
-    <div class="section-body">
-      <div class="field" style="margin-top:6px"><label>Primary Care Physician</label><input type="text"></div>
-      <div class="row" style="margin-top:10px">
-        <div class="field grow-2">
-          <label>Current Medications (list all)</label>
-          <textarea rows="4"></textarea>
-        </div>
-        <div class="field grow-2">
-          <label>Allergies</label>
-          <textarea rows="4"></textarea>
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <div class="field-label">Check all previous illnesses/conditions that apply:</div>
-        <div class="checkbox-group">
-          <label><input type="checkbox"> Diabetes</label>
-          <label><input type="checkbox"> Heart Disease</label>
-          <label><input type="checkbox"> Asthma</label>
-          <label><input type="checkbox"> Cancer</label>
-          <label><input type="checkbox"> Stroke</label>
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <div class="field-label">Immunization History - Check all you've had:</div>
-        <div class="checkbox-group">
-          <label><input type="checkbox"> COVID-19</label>
-          <label><input type="checkbox"> Flu (current year)</label>
-          <label><input type="checkbox"> Tetanus</label>
-          <label><input type="checkbox"> Measles</label>
-          <label><input type="checkbox"> Chicken Pox</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Current Health Status -->
-  <div class="section">
-    <div class="section-title">Current Health Status</div>
-    <div class="section-body">
-      <div class="field" style="margin-top:6px">
-        <label>Reason for Visit / Chief Complaint</label>
-        <textarea rows="3" style="margin-top:4px"></textarea>
-      </div>
-      <div class="field" style="margin-top:10px">
-        <label>Current Symptoms (describe any symptoms you're experiencing)</label>
-        <textarea rows="3" style="margin-top:4px"></textarea>
-      </div>
-      <div style="margin-top:12px">
-        <div class="field-label">Current Pain Level (0 = No Pain, 10 = Worst Pain)</div>
-        <div class="slider-container">
-          <input type="range" min="0" max="10" value="5" id="painSlider" oninput="document.getElementById('painVal').textContent=this.value">
-          <div class="slider-labels">
-            <span>0 - No Pain</span>
-            <span id="painVal">5 - Moderate</span>
-            <span>10 - Worst</span>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <div class="field-label">Overall Health Rating (1 = Poor, 10 = Excellent)</div>
-        <div class="slider-container">
-          <input type="range" min="1" max="10" value="5" id="healthSlider" oninput="document.getElementById('healthVal').textContent=this.value">
-          <div class="slider-labels">
-            <span>1 - Poor</span>
-            <span id="healthVal">5 - Fair</span>
-            <span>10 - Excellent</span>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <div class="field-label">Do you smoke?</div>
-        <div class="radio-group">
-          <label><input type="radio" name="smoke" value="yes"> Yes</label>
-          <label><input type="radio" name="smoke" value="no"> No</label>
-          <label><input type="radio" name="smoke" value="former"> Former</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Create Patient Portal Account -->
-  <div class="section">
-    <div class="section-title">Create Your Patient Portal Account</div>
-    <div class="section-body">
-      <div class="field" style="margin-top:6px"><label>Username (20 characters max)</label><input type="text" maxlength="20"></div>
-      <div class="row" style="margin-top:10px">
-        <div class="field"><label>Password (minimum 8 characters)*</label><input type="password" minlength="8"></div>
-        <div class="field"><label>Confirm Password</label><input type="password"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Consents and Acknowledgments -->
-  <div class="section">
-    <div class="section-title">Consents and Acknowledgments</div>
-    <div class="section-body">
-      <div style="margin-top:6px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer">
-          <input type="checkbox"> I acknowledge receipt of HIPAA privacy practices *
-        </label>
-      </div>
-      <div style="margin-top:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer">
-          <input type="checkbox"> I consent to email/SMS communications
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn" type="submit">SUBMIT REGISTRATION</button>
-    <button class="btn" type="reset" onclick="document.querySelectorAll('input[type=range]').forEach(r=>{r.value=r.id==='healthSlider'?5:5;r.dispatchEvent(new Event('input'))})">CLEAR FORM</button>
+<!-- ===== HEADER / BANNER ===== -->
+<div id="banner">
+  <img src="logo.png" alt="Company Logo" id="logo">
+  <div id="banner-text">
+    <h1>CarePoint Medical</h1>
+    <p id="dynamic-date"></p>
   </div>
 </div>
-</body>
-</html>
+
+<!-- JavaScript to display dynamic day and date in the banner -->
+<script>
+  var days   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var months = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  var now    = new Date();
+  var suffix = (now.getDate() === 1 || now.getDate() === 21 || now.getDate() === 31) ? "st"
+             : (now.getDate() === 2 || now.getDate() === 22)                         ? "nd"
+             : (now.getDate() === 3 || now.getDate() === 23)                         ? "rd" : "th";
+  document.getElementById("dynamic-date").innerHTML =
+    "Today is: " + days[now.getDay()] + ", " +
+    months[now.getMonth()] + " " + now.getDate() + suffix + ", " + now.getFullYear();
+</script>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div id="main">
+
+  <h2>Patient Registration Form</h2>
+
+  <form action="thankyou.html">
+
+    <!-- ===== PERSONAL INFORMATION ===== -->
+    <div class="section">
+      <h3>Personal Information</h3>
+      <table>
+
+        <!-- First Name, MI, Last Name -->
+        <tr>
+          <td><label for="fname">First Name*</label></td>
+          <td><input type="text" id="fname" name="fname" maxlength="30" required></td>
+
+          <td><label for="mi">MI</label></td>
+          <td><input type="text" id="mi" name="mi" maxlength="1" size="3"></td>
+
+          <td><label for="lname">Last Name*</label></td>
+          <td><input type="text" id="lname" name="lname" maxlength="30" required></td>
+
+          <td><label for="dob">Date of Birth*</label></td>
+          <td><input type="text" id="dob" name="dob" placeholder="MM/DD/YYYY"
+               pattern="\d{2}/\d{2}/\d{4}" maxlength="10" required></td>
+        </tr>
+
+        <!-- SSN and Gender -->
+        <tr>
+          <td><label for="ssn">Social Security Number</label></td>
+          <td><input type="password" id="ssn" name="ssn" maxlength="11"
+               placeholder="XXX-XX-XXXX"></td>
+
+          <td><label>Gender</label></td>
+          <td colspan="5">
+            <input type="radio" name="gender" value="male" id="male">
+            <label for="male">Male</label>
+            &nbsp;
+            <input type="radio" name="gender" value="female" id="female">
+            <label for="female">Female</label>
+            &nbsp;
+            <input type="radio" name="gender" value="other" id="other">
+            <label for="other">Other</label>
+          </td>
+        </tr>
+
+      </table>
+    </div><!-- end Personal Information -->
+
+    <!-- ===== CONTACT INFORMATION ===== -->
+    <div class="section">
+      <h3>Contact Information</h3>
+      <table>
+
+        <!-- Address Lines -->
+        <tr>
+          <td><label for="addr1">Address Line 1*</label></td>
+          <td colspan="3"><input type="text" id="addr1" name="addr1"
+              maxlength="30" size="35" required></td>
+          <td><label for="addr2">Address Line 2</label></td>
+          <td colspan="3"><input type="text" id="addr2" name="addr2"
+              maxlength="30" size="35"></td>
+        </tr>
+
+        <!-- City, State, Zip -->
+        <tr>
+          <td><label for="city">City</label></td>
+          <td><input type="text" id="city" name="city" maxlength="30"></td>
+
+          <td><label for="state">State</label></td>
+          <td>
+            <select id="state" name="state">
+              <option value="">Select State</option>
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="DC">District of Columbia</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA
