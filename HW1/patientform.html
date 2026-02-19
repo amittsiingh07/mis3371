@@ -1,141 +1,448 @@
-<!--
-Program name: patient-form.html
-Author: Amit Singh
-Date created: 02/19/2026
-Date last edited: 02/19/2026
-Version: 1.0
-Description: Patient Registration Form for MIS3371 Homework 1.
-             Collects personal, contact, insurance, and medical history
-             information from a new patient registering on the website.
--->
-
 <!DOCTYPE html>
+<!--
+  Program name: patient-form.html
+  Author: Amit Singh
+  Date created: 02/11/2026
+  Date last edited: 02/19/2026
+  Version: 1.0
+  Description: Patient Registration Form for MIS3371 Homework 1.
+               Collects patient demographic, contact, insurance,
+               medical history, and account creation data.
+-->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Registration Form</title>
+  <!-- External CSS file -->
   <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ===== HEADER / BANNER ===== -->
+<!-- ===================== HEADER / BANNER ===================== -->
 <div id="banner">
-  <img src="logo.png" alt="Company Logo" id="logo">
+  <!-- Logo using inline SVG - no external file needed -->
+  <div id="logo">
+    <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="30" r="28" fill="#ffffff" stroke="#1a5276" stroke-width="2"/>
+      <rect x="26" y="14" width="8" height="32" fill="#1a5276" rx="2"/>
+      <rect x="14" y="26" width="32" height="8" fill="#1a5276" rx="2"/>
+    </svg>
+  </div>
   <div id="banner-text">
-    <h1>CarePoint Medical</h1>
-    <p id="dynamic-date"></p>
+    <h1>CarePoint Medical Center</h1>
+    <p id="tagline">Your Health, Our Priority</p>
+  </div>
+  <div id="banner-date">
+    <!-- Dynamic date via inline JavaScript -->
+    <p id="today-date"></p>
+    <script>
+      var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      var months = ["January","February","March","April","May","June",
+                    "July","August","September","October","November","December"];
+      var now = new Date();
+      var dayName = days[now.getDay()];
+      var monthName = months[now.getMonth()];
+      var dateNum = now.getDate();
+      var year = now.getFullYear();
+      // Add ordinal suffix
+      var suffix = "th";
+      if (dateNum === 1 || dateNum === 21 || dateNum === 31) suffix = "st";
+      else if (dateNum === 2 || dateNum === 22) suffix = "nd";
+      else if (dateNum === 3 || dateNum === 23) suffix = "rd";
+      document.getElementById("today-date").innerHTML =
+        "Today is: " + dayName + ", " + monthName + " " + dateNum + suffix + ", " + year;
+    </script>
   </div>
 </div>
+<!-- End Banner -->
 
-<!-- JavaScript to display dynamic day and date in the banner -->
-<script>
-  var days   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  var months = ["January","February","March","April","May","June",
-                "July","August","September","October","November","December"];
-  var now    = new Date();
-  var suffix = (now.getDate() === 1 || now.getDate() === 21 || now.getDate() === 31) ? "st"
-             : (now.getDate() === 2 || now.getDate() === 22)                         ? "nd"
-             : (now.getDate() === 3 || now.getDate() === 23)                         ? "rd" : "th";
-  document.getElementById("dynamic-date").innerHTML =
-    "Today is: " + days[now.getDay()] + ", " +
-    months[now.getMonth()] + " " + now.getDate() + suffix + ", " + now.getFullYear();
-</script>
+<!-- ===================== MAIN CONTENT ===================== -->
+<div id="main-content">
 
-<!-- ===== MAIN CONTENT ===== -->
-<div id="main">
-
-  <h2>Patient Registration Form</h2>
+  <h2 id="form-title">Patient Registration Form</h2>
 
   <form action="thankyou.html">
 
     <!-- ===== PERSONAL INFORMATION ===== -->
-    <div class="section">
-      <h3>Personal Information</h3>
+    <div class="form-section">
+      <h3 class="section-heading">Personal Information</h3>
       <table>
 
         <!-- First Name, MI, Last Name -->
         <tr>
-          <td><label for="fname">First Name*</label></td>
-          <td><input type="text" id="fname" name="fname" maxlength="30" required></td>
-
-          <td><label for="mi">MI</label></td>
-          <td><input type="text" id="mi" name="mi" maxlength="1" size="3"></td>
-
-          <td><label for="lname">Last Name*</label></td>
-          <td><input type="text" id="lname" name="lname" maxlength="30" required></td>
-
-          <td><label for="dob">Date of Birth*</label></td>
-          <td><input type="text" id="dob" name="dob" placeholder="MM/DD/YYYY"
-               pattern="\d{2}/\d{2}/\d{4}" maxlength="10" required></td>
+          <td class="field-label">First Name *</td>
+          <td><input type="text" name="firstname" maxlength="30" size="20" required></td>
+          <td class="field-label">MI</td>
+          <td><input type="text" name="mi" maxlength="1" size="3"></td>
+          <td class="field-label">Last Name *</td>
+          <td><input type="text" name="lastname" maxlength="30" size="20" required></td>
         </tr>
 
-        <!-- SSN and Gender -->
+        <!-- Date of Birth -->
         <tr>
-          <td><label for="ssn">Social Security Number</label></td>
-          <td><input type="password" id="ssn" name="ssn" maxlength="11"
-               placeholder="XXX-XX-XXXX"></td>
+          <td class="field-label">Date of Birth *</td>
+          <td colspan="2">
+            <input type="text" name="dob" maxlength="10" size="12"
+                   placeholder="MM/DD/YYYY" required>
+          </td>
+          <td class="field-label">Gender</td>
+          <td colspan="2">
+            <label><input type="radio" name="gender" value="male"> Male</label>&nbsp;&nbsp;
+            <label><input type="radio" name="gender" value="female"> Female</label>&nbsp;&nbsp;
+            <label><input type="radio" name="gender" value="other"> Other</label>
+          </td>
+        </tr>
 
-          <td><label>Gender</label></td>
+        <!-- Social Security -->
+        <tr>
+          <td class="field-label">Social Security #</td>
           <td colspan="5">
-            <input type="radio" name="gender" value="male" id="male">
-            <label for="male">Male</label>
-            &nbsp;
-            <input type="radio" name="gender" value="female" id="female">
-            <label for="female">Female</label>
-            &nbsp;
-            <input type="radio" name="gender" value="other" id="other">
-            <label for="other">Other</label>
+            <input type="password" name="ssn" maxlength="11" size="15"
+                   placeholder="XXX-XX-XXXX">
+            <span class="hint">(obscured for security)</span>
           </td>
         </tr>
 
       </table>
-    </div><!-- end Personal Information -->
+    </div>
+    <!-- End Personal Information -->
 
     <!-- ===== CONTACT INFORMATION ===== -->
-    <div class="section">
-      <h3>Contact Information</h3>
+    <div class="form-section">
+      <h3 class="section-heading">Contact Information</h3>
       <table>
 
-        <!-- Address Lines -->
+        <!-- Address Line 1 & 2 -->
         <tr>
-          <td><label for="addr1">Address Line 1*</label></td>
-          <td colspan="3"><input type="text" id="addr1" name="addr1"
-              maxlength="30" size="35" required></td>
-          <td><label for="addr2">Address Line 2</label></td>
-          <td colspan="3"><input type="text" id="addr2" name="addr2"
-              maxlength="30" size="35"></td>
+          <td class="field-label">Address Line 1 *</td>
+          <td colspan="3">
+            <input type="text" name="address1" maxlength="30" size="35" required>
+          </td>
+          <td class="field-label">Address Line 2</td>
+          <td>
+            <input type="text" name="address2" maxlength="30" size="25">
+          </td>
         </tr>
 
         <!-- City, State, Zip -->
         <tr>
-          <td><label for="city">City</label></td>
-          <td><input type="text" id="city" name="city" maxlength="30"></td>
-
-          <td><label for="state">State</label></td>
+          <td class="field-label">City *</td>
           <td>
-            <select id="state" name="state">
+            <input type="text" name="city" maxlength="30" size="20" required>
+          </td>
+          <td class="field-label">State *</td>
+          <td>
+            <select name="state" required>
               <option value="">Select State</option>
-              <option value="AL">Alabama</option>
-              <option value="AK">Alaska</option>
-              <option value="AZ">Arizona</option>
-              <option value="AR">Arkansas</option>
-              <option value="CA">California</option>
-              <option value="CO">Colorado</option>
-              <option value="CT">Connecticut</option>
-              <option value="DE">Delaware</option>
-              <option value="DC">District of Columbia</option>
-              <option value="FL">Florida</option>
-              <option value="GA">Georgia</option>
-              <option value="HI">Hawaii</option>
-              <option value="ID">Idaho</option>
-              <option value="IL">Illinois</option>
-              <option value="IN">Indiana</option>
-              <option value="IA">Iowa</option>
-              <option value="KS">Kansas</option>
-              <option value="KY">Kentucky</option>
-              <option value="LA">Louisiana</option>
-              <option value="ME">Maine</option>
-              <option value="MD">Maryland</option>
-              <option value="MA
+              <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+              <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+              <option>DC</option><option>FL</option><option>GA</option><option>HI</option>
+              <option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+              <option>KS</option><option>KY</option><option>LA</option><option>ME</option>
+              <option>MD</option><option>MA</option><option>MI</option><option>MN</option>
+              <option>MS</option><option>MO</option><option>MT</option><option>NE</option>
+              <option>NV</option><option>NH</option><option>NJ</option><option>NM</option>
+              <option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+              <option>OK</option><option>OR</option><option>PA</option><option>PR</option>
+              <option>RI</option><option>SC</option><option>SD</option><option>TN</option>
+              <option>TX</option><option>UT</option><option>VT</option><option>VA</option>
+              <option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+            </select>
+          </td>
+          <td class="field-label">Zip Code *</td>
+          <td>
+            <input type="text" name="zip" maxlength="10" size="10" required>
+          </td>
+        </tr>
+
+        <!-- Phone & Email -->
+        <tr>
+          <td class="field-label">Home Phone</td>
+          <td>
+            <input type="text" name="homephone" maxlength="14" size="15"
+                   placeholder="(XXX) XXX-XXXX">
+          </td>
+          <td class="field-label">Cell Phone *</td>
+          <td>
+            <input type="text" name="cellphone" maxlength="14" size="15"
+                   placeholder="(XXX) XXX-XXXX" required>
+          </td>
+          <td class="field-label">Email *</td>
+          <td>
+            <input type="email" name="email" size="25" required
+                   placeholder="name@domain.com">
+          </td>
+        </tr>
+
+        <!-- Preferred Contact -->
+        <tr>
+          <td class="field-label">Preferred Contact</td>
+          <td colspan="5">
+            <label><input type="radio" name="contact" value="phone"> Phone</label>&nbsp;&nbsp;
+            <label><input type="radio" name="contact" value="email"> Email</label>&nbsp;&nbsp;
+            <label><input type="radio" name="contact" value="text"> Text</label>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <!-- End Contact Information -->
+
+    <!-- ===== EMERGENCY CONTACT ===== -->
+    <div class="form-section">
+      <h3 class="section-heading">Emergency Contact</h3>
+      <table>
+        <tr>
+          <td class="field-label">Contact Name *</td>
+          <td><input type="text" name="ecname" maxlength="30" size="22" required></td>
+          <td class="field-label">Relationship *</td>
+          <td><input type="text" name="ecrelation" maxlength="20" size="15" required></td>
+          <td class="field-label">Phone</td>
+          <td><input type="text" name="ecphone" maxlength="14" size="15"
+                     placeholder="(XXX) XXX-XXXX"></td>
+        </tr>
+      </table>
+    </div>
+    <!-- End Emergency Contact -->
+
+    <!-- ===== INSURANCE INFORMATION ===== -->
+    <div class="form-section">
+      <h3 class="section-heading">Insurance Information</h3>
+      <table>
+        <tr>
+          <td class="field-label">Do you have insurance?</td>
+          <td colspan="5">
+            <label><input type="radio" name="hasinsurance" value="yes"> Yes</label>&nbsp;&nbsp;
+            <label><input type="radio" name="hasinsurance" value="no"> No</label>
+          </td>
+        </tr>
+        <tr>
+          <td class="field-label">Insurance Company</td>
+          <td><input type="text" name="inscompany" maxlength="40" size="22"></td>
+          <td class="field-label">Policy Number</td>
+          <td><input type="text" name="policynum" maxlength="20" size="18"></td>
+          <td class="field-label">Group Number</td>
+          <td><input type="text" name="groupnum" maxlength="20" size="15"></td>
+        </tr>
+      </table>
+    </div>
+    <!-- End Insurance Information -->
+
+    <!-- ===== MEDICAL HISTORY ===== -->
+    <div class="form-section">
+      <h3 class="section-heading">Medical History</h3>
+      <table>
+
+        <!-- Primary Care Physician -->
+        <tr>
+          <td class="field-label">Primary Care Physician</td>
+          <td colspan="5">
+            <input type="text" name="pcp" maxlength="50" size="45">
+          </td>
+        </tr>
+
+        <!-- Current Medications & Allergies (text areas) -->
+        <tr>
+          <td class="field-label" style="vertical-align:top">Current Medications<br><span class="hint">(list all)</span></td>
+          <td colspan="2">
+            <textarea name="medications" rows="4" cols="30"></textarea>
+          </td>
+          <td class="field-label" style="vertical-align:top">Allergies</td>
+          <td colspan="2">
+            <textarea name="allergies" rows="4" cols="25"></textarea>
+          </td>
+        </tr>
+
+        <!-- Previous Illnesses - Checkboxes -->
+        <tr>
+          <td class="field-label" colspan="6">
+            <strong>Check all previous illnesses/conditions that apply:</strong>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <label><input type="checkbox" name="illness" value="diabetes"> Diabetes</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="illness" value="heartdisease"> Heart Disease</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="illness" value="asthma"> Asthma</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="illness" value="cancer"> Cancer</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="illness" value="stroke"> Stroke</label>
+          </td>
+        </tr>
+
+        <!-- Immunization History - Checkboxes -->
+        <tr>
+          <td class="field-label" colspan="6">
+            <strong>Immunization History - Check all you've had:</strong>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <label><input type="checkbox" name="vaccine" value="covid19"> COVID-19</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="vaccine" value="flu"> Flu (current year)</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="vaccine" value="tetanus"> Tetanus</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="vaccine" value="measles"> Measles</label>&nbsp;&nbsp;
+            <label><input type="checkbox" name="vaccine" value="chickenpox"> Chicken Pox</label>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <!-- End Medical History -->
+
+    <!-- ===== CURRENT HEALTH STATUS ===== -->
+    <div class="form-section">
+      <h3 class="section-heading">Current Health Status</h3>
+      <table>
+
+        <!-- Chief Complaint -->
+        <tr>
+          <td class="field-label" style="vertical-align:top">Reason for Visit /<br>Chief Complaint</td>
+          <td colspan="5">
+            <textarea name="chiefcomplaint" rows="3" cols="55"></textarea>
+          </td>
+        </tr>
+
+        <!-- Current Symptoms -->
+        <tr>
+          <td class="field-label" style="vertical-align:top">Current Symptoms</td>
+          <td colspan="5">
+            <textarea name="symptoms" rows="4" cols="55"
+              placeholder="Describe any symptoms you are experiencing..."></textarea>
+          </td>
+        </tr>
+
+        <!-- Pain Level Slider -->
+        <tr>
+          <td class="field-label">Current Pain Level</td>
+          <td colspan="5">
+            <span class="hint">0 = No Pain</span>
+            <input type="range" name="painlevel" min="0" max="10" value="5"
+                   oninput="document.getElementById('painval').innerText=this.value">
+            <span class="hint">10 = Worst Pain</span>
+            &nbsp; Value: <strong><span id="painval">5</span></strong>
+          </td>
+        </tr>
+
+        <!-- Overall Health Rating Slider -->
+        <tr>
+          <td class="field-label">Overall Health Rating</td>
+          <td colspan="5">
+            <span class="hint">1 = Poor</span>
+            <input type="range" name="healthrating" min="1" max="10" value="5"
+                   oninput="document.getElementById('healthval').innerText=this.value">
+            <span class="hint">10 = Excellent</span>
+            &nbsp; Value: <strong><span id="healthval">5</span></strong>
+          </td>
+        </tr>
+
+        <!-- Smoking Status -->
+        <tr>
+          <td class="field-label">Do you smoke?</td>
+          <td colspan="5">
+            <label><input type="radio" name="smoke" value="yes"> Yes</label>&nbsp;&nbsp;
+            <label><input type="radio" name="smoke" value="no"> No</label>&nbsp;&nbsp;
+            <label><input type="radio" name="smoke" value="former"> Former Smoker</label>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <!-- End Current Health Status -->
+
+    <!-- ===== PATIENT PORTAL ACCOUNT ===== -->
+    <div class="form-section">
+      <h3 class="section-heading">Create Your Patient Portal Account</h3>
+      <table>
+
+        <!-- Username -->
+        <tr>
+          <td class="field-label">Username *</td>
+          <td colspan="5">
+            <input type="text" name="username" maxlength="20" size="22" required>
+            <span class="hint">(20 characters max)</span>
+          </td>
+        </tr>
+
+        <!-- Password -->
+        <tr>
+          <td class="field-label">Password *</td>
+          <td colspan="2">
+            <input type="password" name="password" minlength="8" size="20" required>
+            <span class="hint">(min 8 characters)</span>
+          </td>
+          <td class="field-label">Confirm Password *</td>
+          <td colspan="2">
+            <input type="password" name="confirmpassword" minlength="8" size="20" required>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <!-- End Patient Portal Account -->
+
+    <!-- ===== CONSENTS AND ACKNOWLEDGMENTS ===== -->
+    <div class="form-section">
+      <h3 class="section-heading">Consents and Acknowledgments</h3>
+      <table>
+        <tr>
+          <td colspan="6">
+            <label>
+              <input type="checkbox" name="hipaa" required>
+              I acknowledge receipt of HIPAA privacy practices *
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <label>
+              <input type="checkbox" name="emailsms">
+              I consent to email/SMS communications
+            </label>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- End Consents -->
+
+    <!-- ===== FORM BUTTONS ===== -->
+    <div id="form-buttons">
+      <input type="reset" id="btn-clear" value="CLEAR FORM">
+      <input type="submit" id="btn-submit" value="SUBMIT REGISTRATION">
+    </div>
+
+  </form>
+  <!-- End Form -->
+
+</div>
+<!-- End Main Content -->
+
+<!-- ===================== FOOTER ===================== -->
+<div id="footer">
+  <div id="footer-left">
+    <p><strong>CarePoint Medical Center</strong></p>
+    <p>PO Box 18881</p>
+    <p>Houston, TX 77496</p>
+  </div>
+  <div id="footer-center">
+    <button id="contact-btn"
+      onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (713) 555-0100')">
+      CONTACT US
+    </button>
+  </div>
+  <div id="footer-right">
+    <p>Follow Us:</p>
+    <a href="https://www.facebook.com" target="_blank">Facebook</a> |
+    <a href="https://www.twitter.com" target="_blank">Twitter</a> |
+    <a href="https://www.instagram.com" target="_blank">Instagram</a>
+  </div>
+</div>
+<!-- End Footer -->
+
+</body>
+</html>
+<!--
+  END OF FILE: patient-form.html
+  Author: Your Name
+  Version: 1.0
+-->
