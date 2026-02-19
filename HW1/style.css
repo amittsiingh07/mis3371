@@ -1,7 +1,7 @@
 /*
   Program name: style.css
   Author: Amit Singh
-  Date created: 02/13/2026
+  Date created: 02/12/2026
   Date last edited: 02/19/2026
   Version: 1.0
   Description: External stylesheet for patient-form.html.
@@ -14,7 +14,7 @@
 body {
   font-family: Georgia, serif;
   font-size: 14px;
-  background-color: #eaf4fb;
+  background-color: #f0f4e8;
   color: #1a2e3b;
   margin: 0;
   padding: 0;
@@ -115,8 +115,8 @@ p {
 /* ===== ID SELECTORS ===== */
 
 #banner {
-  background-color: #1a5276;
-  color: #ffffff;
+  background-color: #2e7d32;
+  color: #f1f8e9;
   display: flex;
   align-items: center;
   padding: 12px 24px;
@@ -164,9 +164,9 @@ p {
 }
 
 #btn-clear {
-  background-color: #ffffff;
-  color: #1a5276;
-  border: 2px solid #1a5276;
+  background-color: #f1f8e9;
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
   padding: 9px 24px;
   font-size: 13px;
   font-weight: bold;
@@ -177,9 +177,9 @@ p {
 }
 
 #btn-submit {
-  background-color: #1a5276;
-  color: #ffffff;
-  border: 2px solid #1a5276;
+  background-color: #2e7d32;
+  color: #f1f8e9;
+  border: 2px solid #2e7d32;
   padding: 9px 24px;
   font-size: 13px;
   font-weight: bold;
@@ -199,8 +199,8 @@ p {
 }
 
 #footer {
-  background-color: #1a5276;
-  color: #d6eaf8;
+  background-color: #2e7d32;
+  color: #f1f8e9;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -257,8 +257,8 @@ p {
 }
 
 .section-heading {
-  background-color: #1a5276;
-  color: #ffffff;
+  background-color: #388e3c;
+  color: #f1f8e9;
   font-family: 'Arial', sans-serif;
   font-size: 13px;
   font-weight: bold;
