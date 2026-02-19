@@ -1,86 +1,322 @@
 /*
-Program name: style.css
-Author: [Your Name]
-Date created: February 18, 2026
-Date last edited: February 18, 2026
-Version: 1.0
-Description: External CSS for the Patient Registration Form.
-*/
-/*
-Program name: style.css
-Author: [Your Name]
-Date created: February 17, 2026
-Date last edited: February 17, 2026
-Version: 1.0
-Description: External CSS for the Patient Registration Form.
+  Program name: style.css
+  Author: Amit Singh
+  Date created: 02/13/2026
+  Date last edited: 02/19/2026
+  Version: 1.0
+  Description: External stylesheet for patient-form.html.
+               Controls fonts, colors, layout, and form styling
+               for the CarePoint Medical Center patient registration page.
 */
 
-/* 1. HTML Tag Selector - Setting the overall look */
+/* ===== TAG SELECTORS ===== */
+
 body {
-    background-color: #f0f4f8; /* Professional light blue-grey background */
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #333333;
-    margin: 0;
-    padding: 0;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  background-color: #eaf4fb;
+  color: #1a2e3b;
+  margin: 0;
+  padding: 0;
 }
 
-/* 2. ID Selector - Styling the specific Banner */
-#header-banner {
-    background-color: #004a99; /* Deep medical blue */
-    color: #ffffff;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 5px solid #003366;
+h1 {
+  font-family: 'Arial', sans-serif;
+  font-size: 26px;
+  color: #ffffff;
+  margin: 0;
 }
 
-#header-banner h1 {
-    margin: 10px 0;
-    font-family: "Georgia", serif; /* Different font for heading */
+h2 {
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  color: #1a5276;
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
 }
 
-/* 3. Class Selector - Styling the form area and buttons */
-.buttons {
-    text-align: center;
-    padding: 30px;
+h3 {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px;
 }
 
-button {
-    background-color: #004a99;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover {
-    background-color: #003366;
-}
-
-/* Table styling for professional alignment */
 table {
-    background-color: #ffffff;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 80%;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 td {
-    padding: 10px;
+  padding: 6px 8px;
+  vertical-align: middle;
 }
 
-/* Style for the Footer */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+select,
+textarea {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  border: 1px solid #aac4d8;
+  border-radius: 3px;
+  padding: 4px 6px;
+  background-color: #ffffff;
+  color: #1a2e3b;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #1a5276;
+  background-color: #f0f8ff;
+}
+
+input[type="range"] {
+  width: 220px;
+  accent-color: #1a5276;
+  vertical-align: middle;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #1a5276;
+  margin-right: 3px;
+  cursor: pointer;
+}
+
+a {
+  color: #1a5276;
+  text-decoration: none;
+}
+
+/* Visited hyperlinks */
+a:visited {
+  color: #7d3c98;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #117a8b;
+}
+
+p {
+  margin: 4px 0;
+  font-family: Georgia, serif;
+}
+
+
+/* ===== ID SELECTORS ===== */
+
+#banner {
+  background-color: #1a5276;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 18px;
+}
+
+#banner-text {
+  flex: 1;
+}
+
+#tagline {
+  font-size: 12px;
+  color: #aed6f1;
+  margin: 2px 0 0 0;
+  font-style: italic;
+}
+
+#banner-date {
+  font-size: 13px;
+  color: #d6eaf8;
+  text-align: right;
+  font-family: 'Arial', sans-serif;
+}
+
+#main-content {
+  max-width: 860px;
+  margin: 24px auto;
+  padding: 0 20px 30px;
+}
+
+#form-title {
+  border-bottom: 2px solid #1a5276;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+}
+
+#form-buttons {
+  text-align: center;
+  margin: 24px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#btn-clear {
+  background-color: #ffffff;
+  color: #1a5276;
+  border: 2px solid #1a5276;
+  padding: 9px 24px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+#btn-submit {
+  background-color: #1a5276;
+  color: #ffffff;
+  border: 2px solid #1a5276;
+  padding: 9px 24px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+#btn-clear:hover {
+  background-color: #d6eaf8;
+}
+
+#btn-submit:hover {
+  background-color: #117a8b;
+  border-color: #117a8b;
+}
+
 #footer {
-    background-color: #333333;
-    color: #cccccc;
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9em;
+  background-color: #1a5276;
+  color: #d6eaf8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  font-size: 13px;
+  font-family: 'Arial', sans-serif;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* Visited and Visited Hyperlinks */
-a:link { color: #004a99; }
-a:visited { color: #551a8b; }
+#footer-center {
+  text-align: center;
+}
+
+#footer-right {
+  text-align: right;
+}
+
+#contact-btn {
+  background-color: #ffffff;
+  color: #1a5276;
+  border: 2px solid #ffffff;
+  padding: 7px 20px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+#contact-btn:hover {
+  background-color: #aed6f1;
+}
+
+#logo {
+  flex-shrink: 0;
+}
+
+#today-date {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+
+/* ===== CLASS SELECTORS ===== */
+
+.form-section {
+  border: 1px solid #aac4d8;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.section-heading {
+  background-color: #1a5276;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 6px 10px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.field-label {
+  font-weight: bold;
+  font-size: 12px;
+  color: #1a2e3b;
+  white-space: nowrap;
+  width: 140px;
+}
+
+.hint {
+  font-size: 11px;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+
+/* ===== NAME/ATTRIBUTE SELECTORS ===== */
+
+input[name="ssn"] {
+  letter-spacing: 2px;
+}
+
+input[name="username"] {
+  font-family: 'Courier New', monospace;
+}
+
+input[name="password"],
+input[name="confirmpassword"] {
+  letter-spacing: 3px;
+}
+
+textarea[name="symptoms"],
+textarea[name="chiefcomplaint"] {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Footer links */
+#footer a {
+  color: #aed6f1;
+}
+
+#footer a:visited {
+  color: #d7bde2;
+}
+
+#footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/*
+  END OF FILE: style.css
+*/
