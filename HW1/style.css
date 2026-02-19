@@ -1,0 +1,86 @@
+/*
+Program name: style.css
+Author: [Your Name]
+Date created: February 18, 2026
+Date last edited: February 18, 2026
+Version: 1.0
+Description: External CSS for the Patient Registration Form.
+*/
+/*
+Program name: style.css
+Author: [Your Name]
+Date created: February 17, 2026
+Date last edited: February 17, 2026
+Version: 1.0
+Description: External CSS for the Patient Registration Form.
+*/
+
+/* 1. HTML Tag Selector - Setting the overall look */
+body {
+    background-color: #f0f4f8; /* Professional light blue-grey background */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. ID Selector - Styling the specific Banner */
+#header-banner {
+    background-color: #004a99; /* Deep medical blue */
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 5px solid #003366;
+}
+
+#header-banner h1 {
+    margin: 10px 0;
+    font-family: "Georgia", serif; /* Different font for heading */
+}
+
+/* 3. Class Selector - Styling the form area and buttons */
+.buttons {
+    text-align: center;
+    padding: 30px;
+}
+
+button {
+    background-color: #004a99;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+/* Table styling for professional alignment */
+table {
+    background-color: #ffffff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 80%;
+}
+
+td {
+    padding: 10px;
+}
+
+/* Style for the Footer */
+#footer {
+    background-color: #333333;
+    color: #cccccc;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+}
+
+/* Visited and Visited Hyperlinks */
+a:link { color: #004a99; }
+a:visited { color: #551a8b; }
