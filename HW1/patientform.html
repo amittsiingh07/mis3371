@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <!--
 Program name: patient-form.html
-Author: Your Name (as it appears in UH roster)
+Author: Amit Singh
 Date created: 02/19/2026
-Date last edited: 02/19/2026
-Version: 1.0
-Description: Patient Registration Form for MIS3371 Homework 1. 
-             Collects patient demographic, contact, insurance,
-             medical history, and account information.
+Date last edited: 02/22/2026
+Version: 1.2
+Description: Patient Registration Form for MIS3371 Homework 1. Collects patient demographic, contact, insurance, medical history, and account information.
 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Patient Registration Form - CarePoint Medical Center</title>
   <!-- External CSS file -->
-  <link href="style.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
 <!-- ===================== HEADER / BANNER ===================== -->
 <div id="banner">
-  <!-- Logo using simple image file -->
+  <!-- Logo using image file -->
   <div id="logo">
     <img src="medical-logo.png" alt="CarePoint Medical Logo" width="60" height="60">
   </div>
   
   <div id="banner-text">
     <h1>CarePoint Medical Center</h1>
-    <p id="tagline">Your Health, Our Priority</p>
+    <p id="tagline">Your Health, Our Priority Since 2026</p>
   </div>
   
   <div id="banner-date">
@@ -36,9 +34,9 @@ Description: Patient Registration Form for MIS3371 Homework 1.
     <p id="today-date"></p>
     <script>
       var now = new Date();
-      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      var months = ["January", "February", "March", "April", "May", "June", "July", 
-                   "August", "September", "October", "November", "December"];
+      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+      var months = new Array("January", "February", "March", "April", "May", "June", "July", 
+                   "August", "September", "October", "November", "December");
       var dayName = days[now.getDay()];
       var monthName = months[now.getMonth()];
       var dateNum = now.getDate();
@@ -57,7 +55,7 @@ Description: Patient Registration Form for MIS3371 Homework 1.
   <h2 id="form-title">Patient Registration Form</h2>
   <p class="form-instruction">* Required fields</p>
 
-  <form action="thankyou.html">
+  <form action="thankyou.html" method="post">
 
     <!-- ===== PERSONAL INFORMATION ===== -->
     <div class="form-section">
@@ -66,12 +64,12 @@ Description: Patient Registration Form for MIS3371 Homework 1.
 
         <!-- First Name, MI, Last Name -->
         <tr>
-          <td class="field-label">First Name *</td>
-          <td><input type="text" name="firstname" maxlength="30" size="20" required></td>
-          <td class="field-label">MI</td>
-          <td><input type="text" name="mi" maxlength="1" size="3"></td>
-          <td class="field-label">Last Name *</td>
-          <td><input type="text" name="lastname" maxlength="30" size="20" required></td>
+          <td class="field-label" width="15%">First Name *</td>
+          <td width="25%"><input type="text" name="firstname" maxlength="30" size="20" required></td>
+          <td class="field-label" width="5%">MI</td>
+          <td width="10%"><input type="text" name="mi" maxlength="1" size="3"></td>
+          <td class="field-label" width="15%">Last Name *</td>
+          <td width="30%"><input type="text" name="lastname" maxlength="30" size="20" required></td>
         </tr>
 
         <!-- Date of Birth and Gender -->
@@ -393,7 +391,7 @@ Description: Patient Registration Form for MIS3371 Homework 1.
           <td class="field-label">Password *</td>
           <td colspan="2">
             <input type="password" name="password" minlength="8" size="20" required>
-            <span style="font-size: 11px; color: #666666;">(min 8 characters)</span>
+            <span style="font-size: 11px; color: #666666;">(minimum 8 characters)</span>
           </td>
           <td class="field-label">Confirm Password *</td>
           <td colspan="2">
@@ -447,33 +445,38 @@ Description: Patient Registration Form for MIS3371 Homework 1.
   </div>
   
   <div id="footer-center">
-    <!-- Clickable button as required -->
+    <!-- Clickable button -->
     <button id="contact-btn" onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (713) 555-0100')">
       CONTACT US
     </button>
   </div>
   
   <div id="footer-right">
-    <p>&copy; 2026 CarePoint Medical Center</p>
+    <p>&copy; 2026 CarePoint Medical Center. All rights reserved</p>
   </div>
 </div>
 <!-- End Footer -->
 
 <!-- Additional JavaScript -->
 <script>
-  console.log("Patient registration form loaded");
+  console.log("Patient registration form loaded successfully");
   
   function showFormHelp() {
-    alert("Please fill out all required fields marked with *");
+    alert("Please fill out all required fields that have the * symbol");
   }
   
   window.onload = function() {
-    console.log("Form is ready for input");
+    console.log("Form is ready for user input");
+    // TODO: add form validation later
   };
 </script>
+
+<!-- I need to remember to upload the logo image to w3spaces -->
 
 </body>
 </html>
 <!--
   END OF FILE: patient-form.html
+  Author: Amit Singh
+  Version: 1.2
 -->
