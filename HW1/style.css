@@ -1,11 +1,10 @@
 /*
 Program name: style.css
-Author: Your Name (as it appears in UH roster)
+Author: Amit Singh
 Date created: 02/19/2026
-Date last edited: 02/19/2026
-Version: 1.0
-Description: External stylesheet for patient-form.html.
-             Controls appearance of the patient registration form.
+Date last edited: 02/22/2026
+Version: 1.1
+Description: External stylesheet for patient-form.html. Controls appearance of the patient registration form.
 */
 
 /* ===== TAG SELECTORS ===== */
@@ -14,15 +13,15 @@ body {
   font-size: 14px;
   background-color: #e6f2ff;
   color: #000000;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 
 h1 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 24px;
   color: #ffffff;
-  margin: 0;
+  margin: 0px 0px 0px 0px;
   font-weight: bold;
 }
 
@@ -32,6 +31,7 @@ h2 {
   color: #003366;
   text-align: center;
   margin-bottom: 10px;
+  margin-top: 5px;
 }
 
 h3 {
@@ -39,10 +39,12 @@ h3 {
   font-size: 16px;
   margin: 0;
   font-weight: bold;
+  /* might change this color later */
 }
 
 table {
   width: 100%;
+  /* border: 1px solid black;  /* commented out - looked bad */
 }
 
 td {
@@ -50,45 +52,64 @@ td {
   vertical-align: middle;
 }
 
+/* form element styling */
 input, select, textarea {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;
   border: 1px solid #999999;
-  padding: 4px;
+  padding: 4px 4px 4px 4px;
   background-color: #ffffff;
 }
 
-input:focus, select:focus, textarea:focus {
+/* focus effects */
+input:focus {
   background-color: #ffffcc;
   border: 1px solid #0000ff;
 }
 
-input[type="radio"], input[type="checkbox"] {
-  margin-right: 3px;
+select:focus {
+  background-color: #ffffcc;
+  border: 1px solid #0000ff;
 }
 
+textarea:focus {
+  background-color: #ffffcc;
+  border: 1px solid #0000ff;
+}
+
+/* radio and checkbox spacing */
+input[type="radio"], input[type="checkbox"] {
+  margin-right: 3px;
+  margin-left: 5px;
+}
+
+/* slider styling */
 input[type="range"] {
   width: 200px;
   border: none;
   background-color: transparent;
 }
 
+/* link styles */
 a {
   color: #003366;
   text-decoration: none;
 }
 
+/* visited links */
 a:visited {
   color: #800080;
 }
 
+/* hover effect */
 a:hover {
   text-decoration: underline;
   color: #ff0000;
 }
 
+/* paragraph styles */
 p {
-  margin: 5px 0;
+  margin: 5px 0px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -98,14 +119,16 @@ p {
 #banner {
   background-color: #003399;
   color: #ffffff;
-  padding: 10px;
+  padding: 10px 15px 10px 15px;
   overflow: auto;
+  /* height: 80px;  /* removed - didn't work right */
 }
 
 #logo {
   float: left;
   width: 70px;
   margin-right: 15px;
+  margin-left: 5px;
 }
 
 #banner-text {
@@ -116,7 +139,7 @@ p {
 #tagline {
   font-size: 12px;
   color: #ccccff;
-  margin: 2px 0 0 0;
+  margin: 2px 0px 0px 0px;
   font-style: italic;
 }
 
@@ -127,12 +150,13 @@ p {
   padding-top: 15px;
   font-size: 13px;
   color: #ffffff;
+  font-weight: normal;
 }
 
 #main-content {
   width: 900px;
-  margin: 20px auto;
-  padding: 10px;
+  margin: 20px auto 20px auto;
+  padding: 10px 15px 10px 15px;
   background-color: #ffffff;
   border: 1px solid #cccccc;
 }
@@ -153,7 +177,7 @@ p {
   background-color: #cccccc;
   color: #000000;
   border: 1px solid #666666;
-  padding: 8px 25px;
+  padding: 8px 25px 8px 25px;
   font-size: 14px;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
@@ -165,7 +189,7 @@ p {
   background-color: #003399;
   color: #ffffff;
   border: 1px solid #003399;
-  padding: 8px 25px;
+  padding: 8px 25px 8px 25px;
   font-size: 14px;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
@@ -184,10 +208,10 @@ p {
 #footer {
   background-color: #003399;
   color: #ffffff;
-  padding: 15px 20px;
+  padding: 15px 20px 15px 20px;
   overflow: auto;
   font-size: 13px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 #footer-left {
@@ -216,6 +240,7 @@ p {
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
+  /* border-radius: 5px;  /* tried this but didn't like it */
 }
 
 #contact-btn:hover {
@@ -233,6 +258,7 @@ p {
 .form-section {
   border: 1px solid #cccccc;
   margin-bottom: 20px;
+  margin-top: 5px;
   background-color: #ffffff;
 }
 
@@ -242,8 +268,8 @@ p {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: bold;
-  padding: 6px 10px;
-  margin: 0;
+  padding: 6px 10px 6px 10px;
+  margin: 0px;
   border-bottom: 1px solid #cccccc;
 }
 
@@ -260,14 +286,15 @@ p {
   color: #ff0000;
   text-align: center;
   margin-top: -10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
+/* special class for ssn field - not sure if needed */
 .ssn-field {
   letter-spacing: 2px;
 }
 
-/* Footer link colors */
+/* footer link styles */
 #footer a {
   color: #ccccff;
 }
@@ -281,9 +308,16 @@ p {
   text-decoration: underline;
 }
 
-/* Special styling for username */
+/* username special font */
 input[name="username"] {
   font-family: Courier New, monospace;
 }
+
+/* 
+   extra styles I might need later
+   .highlight {
+     background-color: yellow;
+   }
+*/
 
 /* END OF FILE: style.css */
