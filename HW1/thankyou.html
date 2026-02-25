@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--
+Program name: thankyou.html
+Author: Amit Singh
+Date created: 02/24/2026
+Date last edited: 02/24/2026
+Version: 1.0
+Description: Thank you confirmation page for patient registration form submission.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You - CarePoint Medical Center</title>
+  <!-- Same external CSS file as main form -->
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<!-- ===================== HEADER / BANNER ===================== -->
+<div id="banner">
+  <!-- Logo using image file -->
+  <div id="logo">
+    <img src="medical-logo.png" alt="CarePoint Medical Logo" width="60" height="60">
+  </div>
+  
+  <div id="banner-text">
+    <h1>CarePoint Medical Center</h1>
+    <p id="tagline">We Get You Right, Our Priority Since 2026</p>
+  </div>
+  
+  <div id="banner-date">
+    <!-- Dynamic date using JavaScript -->
+    <p id="today-date"></p>
+    <script>
+      var now = new Date();
+      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+      var months = new Array("January", "February", "March", "April", "May", "June", "July", 
+                   "August", "September", "October", "November", "December");
+      var dayName = days[now.getDay()];
+      var monthName = months[now.getMonth()];
+      var dateNum = now.getDate();
+      var year = now.getFullYear();
+      
+      document.getElementById("today-date").innerHTML = 
+        "Today is: " + dayName + ", " + monthName + " " + dateNum + ", " + year;
+    </script>
+  </div>
+</div>
+<!-- End Banner -->
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<div id="main-content" style="min-height: 300px;">
+
+  <h2 id="form-title">Thank You</h2>
+  
+  <div style="text-align: center; margin: 40px 20px; padding: 20px;">
+    
+    <p style="font-size: 20px; margin-bottom: 30px;">Your patient registration has been submitted successfully.</p>
+    
+    <div style="margin-top: 30px;">
+      <a href="patient-form.html" style="background-color: #0066cc; color: white; padding: 10px 25px; text-decoration: none; font-weight: bold; border: 1px solid #0066cc;">Return to Registration Form</a>
+    </div>
+    
+  </div>
+
+</div>
+<!-- End Main Content -->
+
+<!-- ===================== FOOTER ===================== -->
+<div id="footer">
+  <div id="footer-left">
+    <p><strong>CarePoint Medical Center</strong></p>
+    <p>123 Main Street</p>
+    <p>Houston, TX 77001</p>
+    <p>Phone: (713) 555-0100</p>
+  </div>
+  
+  <div id="footer-center">
+    <!-- Clickable button -->
+    <button id="contact-btn" onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (123) 345-5678')">
+      CONTACT US
+    </button>
+  </div>
+  
+  <div id="footer-right">
+    <p>&copy; 2026 CarePoint Medical Center</p>
+  </div>
+</div>
+<!-- End Footer -->
+
+</body>
+</html>
+<!--
+  END OF FILE: thankyou.html
+  Author: Amit Singh
+  Version: 1.0
+-->
