@@ -2,10 +2,12 @@
 <!--
 Program name: patientform.html
 Author: Amit Singh
-Date created: 02/19/2026
-Date last edited: 02/22/2026
-Version: 1.2
-Description: Patient Registration Form for MIS3371 Homework 1. Collects patient demographic, contact, insurance, medical history, and account information.
+Date created: 03/22/2026
+Date last edited: 03/22/2026
+Version: 2.0
+Description: Patient Registration Form for MIS3371 Homework 2. 
+             Collects patient demographic, contact, insurance, medical history, 
+             and account information with real-time validation and review functionality.
 -->
 <html lang="en">
 <head>
@@ -13,6 +15,8 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
   <title>Patient Registration Form - CarePoint Medical Center</title>
   <!-- External CSS file -->
   <link href="style.css" rel="stylesheet" type="text/css">
+  <!-- External JavaScript file -->
+  <script src="validation.js" defer></script>
 </head>
 
 <body>
@@ -55,7 +59,7 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
   <h2 id="form-title">Patient Registration Form</h2>
   <p class="form-instruction">* Required fields</p>
 
-  <form action="thankyou.html">
+  <form id="registrationForm" action="thankyou.html">
 
     <!-- ===== PERSONAL INFORMATION ===== -->
     <div class="form-section">
@@ -65,18 +69,37 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <!-- First Name, MI, Last Name -->
         <tr>
           <td class="field-label" width="15%">First Name *</td>
-          <td width="25%"><input type="text" name="firstname" maxlength="30" size="20" required></td>
+          <td width="25%">
+            <input type="text" name="firstname" maxlength="30" size="20" required
+                   pattern="[A-Za-z'\-\s]{1,30}"
+                   title="Enter your first name (letters, apostrophes and dashes only, 1-30 characters)"
+                   onblur="validateFirstName()">
+            <span class="error-msg" id="firstnameError"></span>
+          </td>
           <td class="field-label" width="5%">MI</td>
-          <td width="10%"><input type="text" name="mi" maxlength="1" size="3"></td>
+          <td width="10%">
+            <input type="text" name="mi" maxlength="1" size="3"
+                   pattern="[A-Za-z]?"
+                   title="Middle initial (1 letter only)">
+          </td>
           <td class="field-label" width="15%">Last Name *</td>
-          <td width="30%"><input type="text" name="lastname" maxlength="30" size="20" required></td>
+          <td width="30%">
+            <input type="text" name="lastname" maxlength="30" size="20" required
+                   pattern="[A-Za-z0-9\-\s]{1,30}"
+                   title="Enter your last name (letters, numbers, apostrophes and dashes only)"
+                   onblur="validateLastName()">
+            <span class="error-msg" id="lastnameError"></span>
+          </td>
         </tr>
 
         <!-- Date of Birth and Gender -->
         <tr>
           <td class="field-label">Date of Birth *</td>
           <td colspan="2">
-            <input type="text" name="dob" maxlength="10" size="12" placeholder="MM/DD/YYYY" required>
+            <input type="date" name="dob" id="dob" required
+                   title="Date of birth (must be between 120 years ago and today)"
+                   onblur="validateBirthDate()">
+            <span class="error-msg" id="dobError"></span>
           </td>
           <td class="field-label">Gender</td>
           <td colspan="2">
@@ -90,7 +113,9 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <tr>
           <td class="field-label">Social Security #</td>
           <td colspan="5">
-            <input type="password" name="ssn" maxlength="11" size="15" placeholder="XXX-XX-XXXX">
+            <input type="password" name="ssn" maxlength="11" size="15" placeholder="XXX-XX-XXXX"
+                   pattern="[0-9]{3}-[0-9]{2}-[0-9]{4}"
+                   title="Format: XXX-XX-XXXX (9 digits with dashes)">
             <span style="font-size: 11px; color: #666666;">(hidden for security)</span>
           </td>
         </tr>
@@ -108,11 +133,13 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <tr>
           <td class="field-label">Address Line 1 *</td>
           <td colspan="3">
-            <input type="text" name="address1" maxlength="30" size="35" required>
+            <input type="text" name="address1" maxlength="30" size="35" required
+                   title="Street address (2-30 characters)">
           </td>
           <td class="field-label">Address Line 2</td>
           <td>
-            <input type="text" name="address2" maxlength="30" size="25">
+            <input type="text" name="address2" maxlength="30" size="25"
+                   title="Apartment, suite, etc. (optional)">
           </td>
         </tr>
 
@@ -120,11 +147,12 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <tr>
           <td class="field-label">City *</td>
           <td>
-            <input type="text" name="city" maxlength="30" size="20" required>
+            <input type="text" name="city" maxlength="30" size="20" required
+                   title="City name (2-30 characters)">
           </td>
           <td class="field-label">State *</td>
           <td>
-            <select name="state" required>
+            <select name="state" required title="Select your state">
               <option value="">Select State</option>
               <option value="AL">Alabama</option>
               <option value="AK">Alaska</option>
@@ -181,7 +209,11 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
           </td>
           <td class="field-label">Zip Code *</td>
           <td>
-            <input type="text" name="zip" maxlength="10" size="10" required>
+            <input type="text" name="zip" maxlength="10" size="10" required
+                   pattern="[0-9]{5}(-[0-9]{4})?"
+                   title="Enter 5-digit zip code or ZIP+4 format (12345 or 12345-6789)"
+                   onblur="validateZip()">
+            <span class="error-msg" id="zipError"></span>
           </td>
         </tr>
 
@@ -189,15 +221,24 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <tr>
           <td class="field-label">Home Phone</td>
           <td>
-            <input type="text" name="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX">
+            <input type="text" name="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"
+                   pattern="\(\d{3}\)\s\d{3}-\d{4}"
+                   title="Format: (XXX) XXX-XXXX">
           </td>
           <td class="field-label">Cell Phone *</td>
           <td>
-            <input type="text" name="cellphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required>
+            <input type="text" name="cellphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required
+                   pattern="\(\d{3}\)\s\d{3}-\d{4}"
+                   title="Format: (XXX) XXX-XXXX"
+                   onblur="validatePhone()">
+            <span class="error-msg" id="phoneError"></span>
           </td>
           <td class="field-label">Email *</td>
           <td>
-            <input type="email" name="email" size="25" required placeholder="name@domain.com">
+            <input type="email" name="email" size="25" required placeholder="name@domain.com"
+                   title="Format: name@domain.com (e.g., john.smith@email.com)"
+                   onblur="validateEmail()">
+            <span class="error-msg" id="emailError"></span>
           </td>
         </tr>
 
@@ -338,23 +379,27 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
           </td>
         </tr>
 
-        <!-- Pain Level Slider -->
+        <!-- Pain Level Slider with dynamic value display -->
         <tr>
           <td class="field-label">Current Pain Level</td>
           <td colspan="5">
             <span style="font-size: 11px;">0 = No Pain</span>
-            <input type="range" name="painlevel" min="0" max="10" value="5">
+            <input type="range" name="painlevel" min="0" max="10" value="5" 
+                   id="painSlider" oninput="updateSliderValue('painSlider', 'painValue')">
             <span style="font-size: 11px;">10 = Worst Pain</span>
+            &nbsp; Value: <strong><span id="painValue">5</span></strong>
           </td>
         </tr>
 
-        <!-- Overall Health Rating Slider -->
+        <!-- Overall Health Rating Slider with dynamic value display -->
         <tr>
           <td class="field-label">Overall Health Rating</td>
           <td colspan="5">
             <span style="font-size: 11px;">1 = Poor</span>
-            <input type="range" name="healthrating" min="1" max="10" value="5">
+            <input type="range" name="healthrating" min="1" max="10" value="5"
+                   id="healthSlider" oninput="updateSliderValue('healthSlider', 'healthValue')">
             <span style="font-size: 11px;">10 = Excellent</span>
+            &nbsp; Value: <strong><span id="healthValue">5</span></strong>
           </td>
         </tr>
 
@@ -381,8 +426,11 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <tr>
           <td class="field-label">Username *</td>
           <td colspan="5">
-            <input type="text" name="username" maxlength="20" size="22" required>
-            <span style="font-size: 11px; color: #666666;">(max 20 characters)</span>
+            <input type="text" name="username" maxlength="30" size="22" required
+                   pattern="[A-Za-z][A-Za-z0-9_\-]{4,29}"
+                   title="Start with a letter, 5-30 characters, no spaces. Use letters, numbers, underscore, or dash"
+                   onblur="validateUsername()">
+            <span class="error-msg" id="usernameError"></span>
           </td>
         </tr>
 
@@ -390,12 +438,16 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
         <tr>
           <td class="field-label">Password *</td>
           <td colspan="2">
-            <input type="password" name="password" minlength="8" size="20" required>
-            <span style="font-size: 11px; color: #666666;">(minimum 8 characters)</span>
+            <input type="password" name="password" id="password" minlength="8" size="20" required
+                   title="8-30 characters, must include uppercase, lowercase, number, and special character (!@#$%^&*)"
+                   oninput="validatePassword()">
+            <span class="error-msg" id="passwordError"></span>
           </td>
           <td class="field-label">Confirm Password *</td>
           <td colspan="2">
-            <input type="password" name="confirmpassword" minlength="8" size="20" required>
+            <input type="password" name="confirmpassword" id="confirmpassword" minlength="8" size="20" required
+                   oninput="validatePassword()">
+            <span class="error-msg" id="confirmError"></span>
           </td>
         </tr>
 
@@ -409,7 +461,7 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tr>
           <td colspan="6">
-            <input type="checkbox" name="hipaa" required>
+            <input type="checkbox" name="hipaa" id="hipaaCheckbox" required>
             I acknowledge receipt of HIPAA privacy practices *
           </td>
         </tr>
@@ -426,11 +478,18 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
     <!-- ===== FORM BUTTONS ===== -->
     <div id="form-buttons">
       <input type="reset" id="btn-clear" value="CLEAR AND START OVER">
+      <button type="button" id="btn-review" onclick="displayReview()">REVIEW INFORMATION</button>
       <input type="submit" id="btn-submit" value="SUBMIT REGISTRATION">
     </div>
 
   </form>
   <!-- End Form -->
+
+  <!-- ===== REVIEW AREA ===== -->
+  <div id="review-area" style="display: none; margin-top: 30px; padding: 20px; border: 2px solid #0066cc; background-color: #f9f9f9;">
+    <h3 style="text-align: center; color: #003399;">PLEASE REVIEW THIS INFORMATION</h3>
+    <div id="review-content"></div>
+  </div>
 
 </div>
 <!-- End Main Content -->
@@ -457,26 +516,10 @@ Description: Patient Registration Form for MIS3371 Homework 1. Collects patient 
 </div>
 <!-- End Footer -->
 
-<!-- Additional JavaScript -->
-<script>
-  console.log("Patient registration form loaded successfully");
-  
-  function showFormHelp() {
-    alert("Please fill out all required fields that have the * symbol");
-  }
-  
-  window.onload = function() {
-    console.log("Form is ready for user input");
-    // TODO: add form validation later
-  };
-</script>
-
-<!-- I need to remember to upload the logo image to a new file!! -->
-
 </body>
 </html>
 <!--
   END OF FILE: patientform.html
   Author: Amit Singh
-  Version: 1.2
+  Version: 2.0
 -->
