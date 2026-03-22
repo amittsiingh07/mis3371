@@ -2,9 +2,11 @@
 Program name: style.css
 Author: Amit Singh
 Date created: 02/19/2026
-Date last edited: 02/22/2026
-Version: 1.1
-Description: External stylesheet for patient-form.html. Controls appearance of the patient registration form.
+Date last edited: 03/22/2026
+Version: 2.0
+Description: External stylesheet for patient-form.html (Homework 2).
+             Controls appearance of the patient registration form with
+             error messages and review area styling.
 */
 
 /* ===== TAG SELECTORS ===== */
@@ -170,7 +172,9 @@ p {
 #form-buttons {
   text-align: center;
   margin: 20px auto;
-  width: 500px;
+  width: auto;
+  display: inline-block;
+  width: 100%;
 }
 
 #btn-clear {
@@ -183,6 +187,23 @@ p {
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
   margin-right: 20px;
+}
+
+#btn-review {
+  background-color: #ff9900;
+  color: #ffffff;
+  border: 1px solid #ff9900;
+  padding: 8px 25px 8px 25px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+#btn-review:hover {
+  background-color: #ff6600;
+  border-color: #ff6600;
 }
 
 #btn-submit {
@@ -252,6 +273,35 @@ p {
   font-weight: normal;
 }
 
+/* Review area styling */
+#review-area {
+  display: none;
+  margin-top: 30px;
+  padding: 20px;
+  border: 2px solid #0066cc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+#review-content {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+}
+
+#review-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#review-content td {
+  padding: 8px;
+  border-bottom: 1px solid #dddddd;
+}
+
+#review-content tr:hover {
+  background-color: #f5f5f5;
+}
+
 
 /* ===== CLASS SELECTORS ===== */
 
@@ -289,6 +339,33 @@ p {
   margin-bottom: 20px;
 }
 
+/* Error message styling */
+.error-msg {
+  display: inline-block;
+  font-size: 11px;
+  color: #ff0000;
+  margin-left: 5px;
+  font-weight: normal;
+}
+
+/* Input validation styling - visual feedback */
+input:invalid {
+  border: 1px solid #ff0000;
+  background-color: #fff0f0;
+}
+
+input:valid {
+  border: 1px solid #00aa00;
+  background-color: #f0fff0;
+}
+
+/* Special styling for password match feedback */
+#passwordError, #confirmError {
+  display: block;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
 /* special class for ssn field - not sure if needed */
 .ssn-field {
   letter-spacing: 2px;
@@ -311,6 +388,20 @@ p {
 /* username special font */
 input[name="username"] {
   font-family: Courier New, monospace;
+}
+
+/* Review area table row styling */
+.review-section-header {
+  background-color: #e6f2ff;
+  font-weight: bold;
+}
+
+.review-valid {
+  color: green;
+}
+
+.review-invalid {
+  color: red;
 }
 
 /* 
