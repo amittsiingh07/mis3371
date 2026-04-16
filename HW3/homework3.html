@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <!--
-Program name: patientform.html
+Program name: homework3.html
 Author: Amit Singh
-Date created: 03/22/2026
-Date last edited: 03/22/2026
-Version: 2.0
-Description: Patient Registration Form for MIS3371 Homework 2. 
+Date created: 04/16/2026
+Date last edited: 04/16/2026
+Version: 3.0
+Description: Patient Registration Form for MIS3371 Homework 3. 
              Collects patient demographic, contact, insurance, medical history, 
-             and account information with real-time validation and review functionality.
+             and account information with REAL-TIME JavaScript validation on the fly.
+             Submit button is disabled until all fields are valid.
 -->
 <html lang="en">
 <head>
@@ -70,25 +71,24 @@ Description: Patient Registration Form for MIS3371 Homework 2.
         <tr>
           <td class="field-label" width="15%">First Name *</td>
           <td width="25%">
-            <input type="text" name="firstname" maxlength="30" size="20" required
-                   pattern="[A-Za-z'\-\s]{1,30}"
+            <input type="text" name="firstname" id="firstname" maxlength="30" size="20" required
                    title="Enter your first name (letters, apostrophes and dashes only, 1-30 characters)"
+                   oninput="validateFirstName()"
                    onblur="validateFirstName()">
-            <span class="error-msg" id="firstnameError"></span>
+            <div class="error-container" id="firstnameError"></div>
           </td>
           <td class="field-label" width="5%">MI</td>
           <td width="10%">
-            <input type="text" name="mi" maxlength="1" size="3"
-                   pattern="[A-Za-z]?"
+            <input type="text" name="mi" id="mi" maxlength="1" size="3"
                    title="Middle initial (1 letter only)">
           </td>
           <td class="field-label" width="15%">Last Name *</td>
           <td width="30%">
-            <input type="text" name="lastname" maxlength="30" size="20" required
-                   pattern="[A-Za-z0-9\-\s]{1,30}"
-                   title="Enter your last name (letters, numbers, apostrophes and dashes only)"
+            <input type="text" name="lastname" id="lastname" maxlength="30" size="20" required
+                   title="Enter your last name (letters, apostrophes and dashes only)"
+                   oninput="validateLastName()"
                    onblur="validateLastName()">
-            <span class="error-msg" id="lastnameError"></span>
+            <div class="error-container" id="lastnameError"></div>
           </td>
         </tr>
 
@@ -98,8 +98,9 @@ Description: Patient Registration Form for MIS3371 Homework 2.
           <td colspan="2">
             <input type="date" name="dob" id="dob" required
                    title="Date of birth (must be between 120 years ago and today)"
+                   oninput="validateBirthDate()"
                    onblur="validateBirthDate()">
-            <span class="error-msg" id="dobError"></span>
+            <div class="error-container" id="dobError"></div>
           </td>
           <td class="field-label">Gender</td>
           <td colspan="2">
@@ -109,13 +110,15 @@ Description: Patient Registration Form for MIS3371 Homework 2.
           </td>
         </tr>
 
-        <!-- Social Security -->
+        <!-- Social Security with auto-formatting -->
         <tr>
           <td class="field-label">Social Security #</td>
           <td colspan="5">
-            <input type="password" name="ssn" maxlength="11" size="15" placeholder="XXX-XX-XXXX"
-                   pattern="[0-9]{3}-[0-9]{2}-[0-9]{4}"
-                   title="Format: XXX-XX-XXXX (9 digits with dashes)">
+            <input type="password" name="ssn" id="ssn" maxlength="11" size="15" placeholder="XXX-XX-XXXX"
+                   title="Enter 9 digit Social Security number (will auto-format with dashes)"
+                   oninput="formatSSN(this)"
+                   onblur="validateSSN()">
+            <div class="error-container" id="ssnError"></div>
             <span style="font-size: 11px; color: #666666;">(hidden for security)</span>
           </td>
         </tr>
@@ -133,12 +136,15 @@ Description: Patient Registration Form for MIS3371 Homework 2.
         <tr>
           <td class="field-label">Address Line 1 *</td>
           <td colspan="3">
-            <input type="text" name="address1" maxlength="30" size="35" required
-                   title="Street address (2-30 characters)">
+            <input type="text" name="address1" id="address1" maxlength="30" size="35" required
+                   title="Street address (2-30 characters)"
+                   oninput="validateAddress()"
+                   onblur="validateAddress()">
+            <div class="error-container" id="addressError"></div>
           </td>
           <td class="field-label">Address Line 2</td>
           <td>
-            <input type="text" name="address2" maxlength="30" size="25"
+            <input type="text" name="address2" id="address2" maxlength="30" size="25"
                    title="Apartment, suite, etc. (optional)">
           </td>
         </tr>
@@ -147,12 +153,15 @@ Description: Patient Registration Form for MIS3371 Homework 2.
         <tr>
           <td class="field-label">City *</td>
           <td>
-            <input type="text" name="city" maxlength="30" size="20" required
-                   title="City name (2-30 characters)">
+            <input type="text" name="city" id="city" maxlength="30" size="20" required
+                   title="City name (2-30 characters)"
+                   oninput="validateCity()"
+                   onblur="validateCity()">
+            <div class="error-container" id="cityError"></div>
           </td>
           <td class="field-label">State *</td>
           <td>
-            <select name="state" required title="Select your state">
+            <select name="state" id="state" required title="Select your state" onchange="validateState()">
               <option value="">Select State</option>
               <option value="AL">Alabama</option>
               <option value="AK">Alaska</option>
@@ -206,14 +215,15 @@ Description: Patient Registration Form for MIS3371 Homework 2.
               <option value="WI">Wisconsin</option>
               <option value="WY">Wyoming</option>
             </select>
+            <div class="error-container" id="stateError"></div>
           </td>
           <td class="field-label">Zip Code *</td>
           <td>
-            <input type="text" name="zip" maxlength="10" size="10" required
-                   pattern="[0-9]{5}(-[0-9]{4})?"
-                   title="Enter 5-digit zip code or ZIP+4 format (12345 or 12345-6789)"
+            <input type="text" name="zip" id="zip" maxlength="10" size="10" required
+                   title="Enter 5-digit zip code"
+                   oninput="validateZip()"
                    onblur="validateZip()">
-            <span class="error-msg" id="zipError"></span>
+            <div class="error-container" id="zipError"></div>
           </td>
         </tr>
 
@@ -221,24 +231,24 @@ Description: Patient Registration Form for MIS3371 Homework 2.
         <tr>
           <td class="field-label">Home Phone</td>
           <td>
-            <input type="text" name="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"
-                   pattern="\(\d{3}\)\s\d{3}-\d{4}"
+            <input type="text" name="homephone" id="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"
                    title="Format: (XXX) XXX-XXXX">
           </td>
           <td class="field-label">Cell Phone *</td>
           <td>
-            <input type="text" name="cellphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required
-                   pattern="\(\d{3}\)\s\d{3}-\d{4}"
+            <input type="text" name="cellphone" id="cellphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required
                    title="Format: (XXX) XXX-XXXX"
+                   oninput="validatePhone()"
                    onblur="validatePhone()">
-            <span class="error-msg" id="phoneError"></span>
+            <div class="error-container" id="phoneError"></div>
           </td>
           <td class="field-label">Email *</td>
           <td>
-            <input type="email" name="email" size="25" required placeholder="name@domain.com"
+            <input type="email" name="email" id="email" size="25" required placeholder="name@domain.com"
                    title="Format: name@domain.com (e.g., john.smith@email.com)"
+                   oninput="validateEmail()"
                    onblur="validateEmail()">
-            <span class="error-msg" id="emailError"></span>
+            <div class="error-container" id="emailError"></div>
           </td>
         </tr>
 
@@ -262,11 +272,11 @@ Description: Patient Registration Form for MIS3371 Homework 2.
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tr>
           <td class="field-label">Contact Name *</td>
-          <td><input type="text" name="ecname" maxlength="30" size="22" required></td>
+          <td><input type="text" name="ecname" id="ecname" maxlength="30" size="22" required></td>
           <td class="field-label">Relationship *</td>
-          <td><input type="text" name="ecrelation" maxlength="20" size="15" required></td>
+          <td><input type="text" name="ecrelation" id="ecrelation" maxlength="20" size="15" required></td>
           <td class="field-label">Phone</td>
-          <td><input type="text" name="ecphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"></td>
+          <td><input type="text" name="ecphone" id="ecphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"></td>
         </tr>
       </table>
     </div>
@@ -426,11 +436,11 @@ Description: Patient Registration Form for MIS3371 Homework 2.
         <tr>
           <td class="field-label">Username *</td>
           <td colspan="5">
-            <input type="text" name="username" maxlength="30" size="22" required
-                   pattern="[A-Za-z][A-Za-z0-9_\-]{4,29}"
+            <input type="text" name="username" id="username" maxlength="30" size="22" required
                    title="Start with a letter, 5-30 characters, no spaces. Use letters, numbers, underscore, or dash"
+                   oninput="validateUsername()"
                    onblur="validateUsername()">
-            <span class="error-msg" id="usernameError"></span>
+            <div class="error-container" id="usernameError"></div>
           </td>
         </tr>
 
@@ -441,13 +451,13 @@ Description: Patient Registration Form for MIS3371 Homework 2.
             <input type="password" name="password" id="password" minlength="8" size="20" required
                    title="8-30 characters, must include uppercase, lowercase, number, and special character (!@#$%^&*)"
                    oninput="validatePassword()">
-            <span class="error-msg" id="passwordError"></span>
+            <div class="error-container" id="passwordError"></div>
           </td>
           <td class="field-label">Confirm Password *</td>
           <td colspan="2">
             <input type="password" name="confirmpassword" id="confirmpassword" minlength="8" size="20" required
                    oninput="validatePassword()">
-            <span class="error-msg" id="confirmError"></span>
+            <div class="error-container" id="confirmError"></div>
           </td>
         </tr>
 
@@ -461,8 +471,9 @@ Description: Patient Registration Form for MIS3371 Homework 2.
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tr>
           <td colspan="6">
-            <input type="checkbox" name="hipaa" id="hipaaCheckbox" required>
+            <input type="checkbox" name="hipaa" id="hipaaCheckbox" required onchange="validateHipaa()">
             I acknowledge receipt of HIPAA privacy practices *
+            <div class="error-container" id="hipaaError"></div>
           </td>
         </tr>
         <tr>
@@ -479,7 +490,8 @@ Description: Patient Registration Form for MIS3371 Homework 2.
     <div id="form-buttons">
       <input type="reset" id="btn-clear" value="CLEAR AND START OVER">
       <button type="button" id="btn-review" onclick="displayReview()">REVIEW INFORMATION</button>
-      <input type="submit" id="btn-submit" value="SUBMIT REGISTRATION">
+      <button type="button" id="btn-validate" onclick="validateAllFields()">VALIDATE FORM</button>
+      <input type="submit" id="btn-submit" value="SUBMIT REGISTRATION" disabled>
     </div>
 
   </form>
@@ -519,7 +531,7 @@ Description: Patient Registration Form for MIS3371 Homework 2.
 </body>
 </html>
 <!--
-  END OF FILE: patientform.html
+  END OF FILE: homework3.html
   Author: Amit Singh
-  Version: 2.0
+  Version: 3.0
 -->
