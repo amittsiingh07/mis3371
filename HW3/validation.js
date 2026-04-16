@@ -1,106 +1,118 @@
 /*
 Program name: validation.js
 Author: Amit Singh
-Date created: 03/22/2026
-Date last edited: 03/22/2026
-Version: 2.0
-Description: External JavaScript file for patient registration form validation.
-             Handles real-time validation, review functionality, slider updates,
-             password matching, and form submission for CarePoint Medical Center.
+Date created: 04/16/2026
+Date last edited: 04/16/2026
+Version: 3.0
+Description: External JavaScript file for patient registration form validation (Homework 3).
+             Handles REAL-TIME validation on input, error tracking, submit button enable/disable,
+             SSN auto-formatting, email lowercase conversion, and form submission.
 */
 
-// ===== GLOBAL VARIABLES =====
-let formValid = true;
-let validationResults = {};
+// ===== ERROR TRACKING OBJECT =====
+// Each field has a true/false flag for errors
+let fieldErrors = {
+    firstname: true,
+    lastname: true,
+    dob: true,
+    email: true,
+    phone: true,
+    zip: true,
+    address: true,
+    city: true,
+    state: true,
+    username: true,
+    password: true,
+    confirmpassword: true,
+    ssn: false,
+    hipaa: true
+};
 
 // ===== HELPER FUNCTIONS =====
 
 function showError(fieldId, message) {
-    let errorSpan = document.getElementById(fieldId);
-    if (errorSpan) {
-        errorSpan.innerHTML = '❌ ' + message;
-        errorSpan.style.color = 'red';
-        errorSpan.style.fontSize = '11px';
-        errorSpan.style.display = 'inline-block';
-        errorSpan.style.marginLeft = '5px';
+    let errorDiv = document.getElementById(fieldId);
+    if (errorDiv) {
+        errorDiv.innerHTML = '❌ ' + message;
+        errorDiv.style.color = 'red';
+        errorDiv.style.fontSize = '11px';
+        errorDiv.style.marginTop = '3px';
     }
-    formValid = false;
 }
 
 function clearError(fieldId) {
-    let errorSpan = document.getElementById(fieldId);
-    if (errorSpan) {
-        errorSpan.innerHTML = '';
-        errorSpan.style.display = 'none';
+    let errorDiv = document.getElementById(fieldId);
+    if (errorDiv) {
+        errorDiv.innerHTML = '✓ Looks good!';
+        errorDiv.style.color = 'green';
     }
 }
 
-function getFieldValue(fieldName) {
-    let field = document.querySelector(`[name="${fieldName}"]`);
-    if (field) {
-        return field.value || '';
-    }
-    return '';
-}
-
-function getSelectedRadio(groupName) {
-    let radios = document.querySelectorAll(`[name="${groupName}"]`);
-    for (let radio of radios) {
-        if (radio.checked) {
-            return radio.value;
+function checkFormValidity() {
+    let hasErrors = false;
+    
+    for (let field in fieldErrors) {
+        if (fieldErrors[field] === true) {
+            hasErrors = true;
+            break;
         }
     }
-    return 'Not selected';
-}
-
-function getSelectedState() {
-    let stateSelect = document.querySelector('[name="state"]');
-    if (stateSelect && stateSelect.selectedIndex > 0) {
-        return stateSelect.options[stateSelect.selectedIndex].text;
-    }
-    return 'Not selected';
-}
-
-function getCheckboxValues(groupName) {
-    let checkboxes = document.querySelectorAll(`[name="${groupName}"]:checked`);
-    let values = [];
-    for (let cb of checkboxes) {
-        values.push(cb.value);
-    }
-    return values.length > 0 ? values.join(', ') : 'None selected';
-}
-
-// ===== SLIDER VALUE UPDATE =====
-
-function updateSliderValue(sliderId, displayId) {
-    let slider = document.getElementById(sliderId);
-    let display = document.getElementById(displayId);
-    if (slider && display) {
-        display.textContent = slider.value;
-    }
-}
-
-// ===== DATE RANGE CALCULATION =====
-
-function setDateRange() {
-    let today = new Date();
     
-    // Set max date to today
-    let maxDate = today.toISOString().split('T')[0];
+    let submitBtn = document.getElementById('btn-submit');
+    if (submitBtn) {
+        submitBtn.disabled = hasErrors;
+        if (hasErrors) {
+            submitBtn.style.backgroundColor = '#cccccc';
+            submitBtn.style.cursor = 'not-allowed';
+        } else {
+            submitBtn.style.backgroundColor = '#003399';
+            submitBtn.style.cursor = 'pointer';
+        }
+    }
     
-    // Set min date to 120 years ago
-    let minDate = new Date();
-    minDate.setFullYear(today.getFullYear() - 120);
-    let minDateStr = minDate.toISOString().split('T')[0];
+    return !hasErrors;
+}
+
+function getFieldValue(fieldId) {
+    let field = document.getElementById(fieldId);
+    return field ? field.value : '';
+}
+
+// ===== SSN AUTO-FORMATTING (NEW FOR HW3) =====
+
+function formatSSN(input) {
+    let value = input.value.replace(/\D/g, '');
     
-    let dobField = document.getElementById('dob');
-    if (dobField) {
-        dobField.setAttribute('max', maxDate);
-        dobField.setAttribute('min', minDateStr);
+    if (value.length > 3 && value.length <= 5) {
+        value = value.slice(0, 3) + '-' + value.slice(3);
+    } else if (value.length > 5) {
+        value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 9);
+    }
+    
+    input.value = value;
+    validateSSN();
+}
+
+function validateSSN() {
+    let ssn = getFieldValue('ssn');
+    let errorId = 'ssnError';
+    
+    if (ssn === '') {
+        showError(errorId, 'SSN is optional but if entered must be valid');
+        fieldErrors.ssn = false;
+        return true;
+    } else if (/^\d{3}-\d{2}-\d{4}$/.test(ssn)) {
+        clearError(errorId);
+        fieldErrors.ssn = false;
+        return true;
+    } else {
+        showError(errorId, 'Format must be XXX-XX-XXXX (9 digits with dashes)');
+        fieldErrors.ssn = true;
+        return false;
     }
 }
 
-// ===== VALIDATION FUNCTIONS =====
+// ===== VALIDATION FUNCTIONS (All updated with oninput) =====
 
 function validateFirstName() {
     let firstName = getFieldValue('firstname');
@@ -108,17 +120,20 @@ function validateFirstName() {
     
     if (firstName === '') {
         showError(errorId, 'First name is required');
-        return false;
+        fieldErrors.firstname = true;
     } else if (firstName.length > 30) {
         showError(errorId, 'First name is too long (max 30 characters)');
-        return false;
+        fieldErrors.firstname = true;
     } else if (!/^[A-Za-z'\-\s]+$/.test(firstName)) {
         showError(errorId, 'Only letters, apostrophes and dashes allowed');
-        return false;
+        fieldErrors.firstname = true;
     } else {
         clearError(errorId);
-        return true;
+        fieldErrors.firstname = false;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.firstname;
 }
 
 function validateLastName() {
@@ -127,17 +142,20 @@ function validateLastName() {
     
     if (lastName === '') {
         showError(errorId, 'Last name is required');
-        return false;
+        fieldErrors.lastname = true;
     } else if (lastName.length > 30) {
         showError(errorId, 'Last name is too long (max 30 characters)');
-        return false;
-    } else if (!/^[A-Za-z0-9'\-\s]+$/.test(lastName)) {
-        showError(errorId, 'Only letters, numbers, apostrophes and dashes allowed');
-        return false;
+        fieldErrors.lastname = true;
+    } else if (!/^[A-Za-z'\-\s]+$/.test(lastName)) {
+        showError(errorId, 'Only letters, apostrophes and dashes allowed');
+        fieldErrors.lastname = true;
     } else {
         clearError(errorId);
-        return true;
+        fieldErrors.lastname = false;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.lastname;
 }
 
 function validateBirthDate() {
@@ -146,6 +164,8 @@ function validateBirthDate() {
     
     if (dob === '') {
         showError(errorId, 'Date of birth is required');
+        fieldErrors.dob = true;
+        checkFormValidity();
         return false;
     }
     
@@ -156,33 +176,46 @@ function validateBirthDate() {
     
     if (birthDate > today) {
         showError(errorId, 'Cannot be born in the future!');
-        return false;
+        fieldErrors.dob = true;
     } else if (birthDate < minDate) {
         showError(errorId, 'Please verify age (must be under 120 years old)');
-        return false;
+        fieldErrors.dob = true;
     } else {
         clearError(errorId);
-        return true;
+        fieldErrors.dob = false;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.dob;
 }
 
 function validateEmail() {
     let email = getFieldValue('email');
     let errorId = 'emailError';
     
+    // Convert to lowercase automatically
+    let emailField = document.getElementById('email');
+    if (emailField) {
+        emailField.value = email.toLowerCase();
+        email = email.toLowerCase();
+    }
+    
     if (email === '') {
         showError(errorId, 'Email address is required');
-        return false;
+        fieldErrors.email = true;
     } else if (!email.includes('@')) {
         showError(errorId, 'Email must contain @ symbol');
-        return false;
+        fieldErrors.email = true;
     } else if (!email.includes('.') || email.indexOf('.') < email.indexOf('@')) {
         showError(errorId, 'Email must have valid domain (e.g., domain.com)');
-        return false;
+        fieldErrors.email = true;
     } else {
         clearError(errorId);
-        return true;
+        fieldErrors.email = false;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.email;
 }
 
 function validatePhone() {
@@ -191,14 +224,17 @@ function validatePhone() {
     
     if (phone === '') {
         showError(errorId, 'Cell phone is required');
-        return false;
+        fieldErrors.phone = true;
     } else if (!/^\(\d{3}\)\s\d{3}-\d{4}$/.test(phone)) {
         showError(errorId, 'Use format (XXX) XXX-XXXX');
-        return false;
+        fieldErrors.phone = true;
     } else {
         clearError(errorId);
-        return true;
+        fieldErrors.phone = false;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.phone;
 }
 
 function validateZip() {
@@ -207,20 +243,71 @@ function validateZip() {
     
     if (zip === '') {
         showError(errorId, 'Zip code is required');
-        return false;
-    } else if (!/^\d{5}(-\d{4})?$/.test(zip)) {
-        showError(errorId, 'Use 5 digits or ZIP+4 format (12345 or 12345-6789)');
-        return false;
+        fieldErrors.zip = true;
+    } else if (!/^\d{5}$/.test(zip)) {
+        showError(errorId, 'Use 5 digits only (no dashes or letters)');
+        fieldErrors.zip = true;
     } else {
         clearError(errorId);
-        
-        // Truncate ZIP+4 to just first 5 digits if needed
-        if (zip.includes('-')) {
-            let truncatedZip = zip.split('-')[0];
-            document.querySelector('[name="zip"]').value = truncatedZip;
-        }
-        return true;
+        fieldErrors.zip = false;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.zip;
+}
+
+function validateAddress() {
+    let address = getFieldValue('address1');
+    let errorId = 'addressError';
+    
+    if (address === '') {
+        showError(errorId, 'Address is required');
+        fieldErrors.address = true;
+    } else if (address.length < 2) {
+        showError(errorId, 'Address must be at least 2 characters');
+        fieldErrors.address = true;
+    } else {
+        clearError(errorId);
+        fieldErrors.address = false;
+    }
+    
+    checkFormValidity();
+    return !fieldErrors.address;
+}
+
+function validateCity() {
+    let city = getFieldValue('city');
+    let errorId = 'cityError';
+    
+    if (city === '') {
+        showError(errorId, 'City is required');
+        fieldErrors.city = true;
+    } else if (city.length < 2) {
+        showError(errorId, 'City must be at least 2 characters');
+        fieldErrors.city = true;
+    } else {
+        clearError(errorId);
+        fieldErrors.city = false;
+    }
+    
+    checkFormValidity();
+    return !fieldErrors.city;
+}
+
+function validateState() {
+    let state = document.getElementById('state');
+    let errorId = 'stateError';
+    
+    if (!state || state.value === '') {
+        showError(errorId, 'Please select a state');
+        fieldErrors.state = true;
+    } else {
+        clearError(errorId);
+        fieldErrors.state = false;
+    }
+    
+    checkFormValidity();
+    return !fieldErrors.state;
 }
 
 function validateUsername() {
@@ -229,32 +316,35 @@ function validateUsername() {
     
     if (username === '') {
         showError(errorId, 'Username is required');
-        return false;
+        fieldErrors.username = true;
     } else if (username.length < 5) {
         showError(errorId, 'Username must be at least 5 characters');
-        return false;
+        fieldErrors.username = true;
     } else if (username.length > 30) {
         showError(errorId, 'Username is too long (max 30 characters)');
-        return false;
+        fieldErrors.username = true;
     } else if (!/^[A-Za-z]/.test(username)) {
         showError(errorId, 'Username must start with a letter');
-        return false;
+        fieldErrors.username = true;
     } else if (/\s/.test(username)) {
         showError(errorId, 'Username cannot contain spaces');
-        return false;
+        fieldErrors.username = true;
     } else if (!/^[A-Za-z][A-Za-z0-9_\-]+$/.test(username)) {
         showError(errorId, 'Use only letters, numbers, underscore or dash');
-        return false;
+        fieldErrors.username = true;
     } else {
         clearError(errorId);
+        fieldErrors.username = false;
         
-        // Convert to lowercase and redisplay
-        let lowercaseUsername = username.toLowerCase();
-        if (lowercaseUsername !== username) {
-            document.querySelector('[name="username"]').value = lowercaseUsername;
+        // Convert to lowercase
+        let usernameField = document.getElementById('username');
+        if (usernameField && usernameField.value !== username.toLowerCase()) {
+            usernameField.value = username.toLowerCase();
         }
-        return true;
     }
+    
+    checkFormValidity();
+    return !fieldErrors.username;
 }
 
 function validatePassword() {
@@ -265,210 +355,10 @@ function validatePassword() {
     
     if (password === '') {
         showError(errorId, 'Password is required');
-        return false;
+        fieldErrors.password = true;
+        fieldErrors.confirmpassword = true;
     } else if (password.length < 8) {
         showError(errorId, 'Password must be at least 8 characters');
-        return false;
+        fieldErrors.password = true;
     } else if (password.length > 30) {
-        showError(errorId, 'Password is too long (max 30 characters)');
-        return false;
-    } else if (!/[A-Z]/.test(password)) {
-        showError(errorId, 'Need at least one uppercase letter');
-        return false;
-    } else if (!/[a-z]/.test(password)) {
-        showError(errorId, 'Need at least one lowercase letter');
-        return false;
-    } else if (!/[0-9]/.test(password)) {
-        showError(errorId, 'Need at least one number');
-        return false;
-    } else if (!/[!@#$%^&*()\-_+=]/.test(password)) {
-        showError(errorId, 'Need at least one special character (!@#$%^&*)');
-        return false;
-    } else if (password.includes('"') || password.includes("'")) {
-        showError(errorId, 'Quotes are not allowed in password');
-        return false;
-    } else if (password === username && username !== '') {
-        showError(errorId, 'Password cannot be the same as username');
-        return false;
-    } else {
-        clearError(errorId);
-        
-        // Check if passwords match
-        if (password !== confirm && confirm !== '') {
-            let confirmError = document.getElementById('confirmError');
-            if (confirmError) {
-                confirmError.innerHTML = '❌ Passwords do not match';
-                confirmError.style.color = 'red';
-                confirmError.style.fontSize = '11px';
-            }
-            return false;
-        } else {
-            let confirmError = document.getElementById('confirmError');
-            if (confirmError) {
-                confirmError.innerHTML = '✓ Passwords match';
-                confirmError.style.color = 'green';
-            }
-            return true;
-        }
-    }
-}
-
-// ===== REVIEW FUNCTION =====
-
-function displayReview() {
-    let reviewHtml = '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">';
-    
-    // Personal Information Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">PERSONAL INFORMATION</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px; width: 40%;"><strong>First Name:</strong></td><td style="padding: 5px;">' + getFieldValue('firstname') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Middle Initial:</strong></td><td style="padding: 5px;">' + (getFieldValue('mi') || 'N/A') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Last Name:</strong></td><td style="padding: 5px;">' + getFieldValue('lastname') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Date of Birth:</strong></td><td style="padding: 5px;">' + getFieldValue('dob') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Gender:</strong></td><td style="padding: 5px;">' + getSelectedRadio('gender') + '</td></tr>';
-    
-    // Contact Information Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">CONTACT INFORMATION</td></tr>';
-    let address = getFieldValue('address1');
-    let address2 = getFieldValue('address2');
-    if (address2) address += ', ' + address2;
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Address:</strong></td><td style="padding: 5px;">' + address + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>City, State, ZIP:</strong></td><td style="padding: 5px;">' + getFieldValue('city') + ', ' + getSelectedState() + ' ' + getFieldValue('zip') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Cell Phone:</strong></td><td style="padding: 5px;">' + getFieldValue('cellphone') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Email:</strong></td><td style="padding: 5px;">' + getFieldValue('email') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Preferred Contact:</strong></td><td style="padding: 5px;">' + getSelectedRadio('contact') + '</td></tr>';
-    
-    // Emergency Contact Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">EMERGENCY CONTACT</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Contact Name:</strong></td><td style="padding: 5px;">' + getFieldValue('ecname') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Relationship:</strong></td><td style="padding: 5px;">' + getFieldValue('ecrelation') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Phone:</strong></td><td style="padding: 5px;">' + getFieldValue('ecphone') + '</td></tr>';
-    
-    // Insurance Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">INSURANCE INFORMATION</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Has Insurance:</strong></td><td style="padding: 5px;">' + getSelectedRadio('hasinsurance') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Insurance Company:</strong></td><td style="padding: 5px;">' + (getFieldValue('inscompany') || 'Not provided') + '</td></tr>';
-    
-    // Medical History Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">MEDICAL HISTORY</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Current Medications:</strong></td><td style="padding: 5px;">' + (getFieldValue('medications') || 'None listed') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Allergies:</strong></td><td style="padding: 5px;">' + (getFieldValue('allergies') || 'None listed') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Previous Illnesses:</strong></td><td style="padding: 5px;">' + getCheckboxValues('illness') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Immunizations:</strong></td><td style="padding: 5px;">' + getCheckboxValues('vaccine') + '</td></tr>';
-    
-    // Health Status Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">CURRENT HEALTH STATUS</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Reason for Visit:</strong></td><td style="padding: 5px;">' + (getFieldValue('chiefcomplaint') || 'Not provided') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Current Symptoms:</strong></td><td style="padding: 5px;">' + (getFieldValue('symptoms') || 'Not provided') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Pain Level:</strong></td><td style="padding: 5px;">' + getFieldValue('painlevel') + '/10</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Health Rating:</strong></td><td style="padding: 5px;">' + getFieldValue('healthrating') + '/10</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Smoking Status:</strong></td><td style="padding: 5px;">' + getSelectedRadio('smoke') + '</td></tr>';
-    
-    // Account Section
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">ACCOUNT INFORMATION</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Username:</strong></td><td style="padding: 5px;">' + getFieldValue('username') + '</td></tr>';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>Password:</strong></td><td style="padding: 5px;">••••••••</td></tr>';
-    
-    // Validation Status
-    reviewHtml += '<tr style="background-color: #e6f2ff;"><td colspan="2" style="padding: 10px; font-weight: bold;">VALIDATION STATUS</td></tr>';
-    
-    // Run validations and show status
-    let validations = [
-        { name: 'First Name', valid: validateFirstName() },
-        { name: 'Last Name', valid: validateLastName() },
-        { name: 'Date of Birth', valid: validateBirthDate() },
-        { name: 'Email', valid: validateEmail() },
-        { name: 'Cell Phone', valid: validatePhone() },
-        { name: 'Zip Code', valid: validateZip() },
-        { name: 'Username', valid: validateUsername() },
-        { name: 'Password', valid: validatePassword() }
-    ];
-    
-    for (let v of validations) {
-        let status = v.valid ? '✓ Valid' : '❌ Invalid';
-        let statusColor = v.valid ? 'green' : 'red';
-        reviewHtml += '<tr><td style="padding: 5px;"><strong>' + v.name + ':</strong></td><td style="padding: 5px; color: ' + statusColor + ';">' + status + '</td></tr>';
-    }
-    
-    // HIPAA checkbox check
-    let hipaaChecked = document.getElementById('hipaaCheckbox') ? document.getElementById('hipaaCheckbox').checked : false;
-    let hipaaStatus = hipaaChecked ? '✓ Accepted' : '❌ Required';
-    let hipaaColor = hipaaChecked ? 'green' : 'red';
-    reviewHtml += '<tr><td style="padding: 5px;"><strong>HIPAA Consent:</strong></td><td style="padding: 5px; color: ' + hipaaColor + ';">' + hipaaStatus + '</td></tr>';
-    
-    reviewHtml += '</table>';
-    
-    let reviewContent = document.getElementById('review-content');
-    if (reviewContent) {
-        reviewContent.innerHTML = reviewHtml;
-    }
-    
-    let reviewArea = document.getElementById('review-area');
-    if (reviewArea) {
-        reviewArea.style.display = 'block';
-        reviewArea.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
-// ===== FORM SUBMISSION VALIDATION =====
-
-function validateForm() {
-    formValid = true;
-    
-    // Call all validation functions
-    validateFirstName();
-    validateLastName();
-    validateBirthDate();
-    validateEmail();
-    validatePhone();
-    validateZip();
-    validateUsername();
-    validatePassword();
-    
-    // Check HIPAA checkbox
-    let hipaaCheckbox = document.getElementById('hipaaCheckbox');
-    if (!hipaaCheckbox.checked) {
-        showError('firstnameError', 'Please acknowledge HIPAA privacy practices');
-        formValid = false;
-    }
-    
-    if (formValid) {
-        displayReview();
-        alert('All fields validated successfully! Your registration will now be submitted.');
-        return true;
-    } else {
-        alert('Please fix the errors above before submitting.\nLook for fields marked with ❌');
-        return false;
-    }
-}
-
-// ===== EVENT LISTENERS SETUP =====
-
-function attachValidationEvents() {
-    // Add submit event to form
-    let form = document.getElementById('registrationForm');
-    if (form) {
-        form.onsubmit = function(e) {
-            if (!validateForm()) {
-                e.preventDefault();
-                return false;
-            }
-            return true;
-        };
-    }
-    
-    // Set date range for DOB
-    setDateRange();
-}
-
-// Initialize when page loads
-window.onload = function() {
-    console.log("Validation script loaded - HW2 Version");
-    attachValidationEvents();
-    
-    // Initialize slider displays
-    updateSliderValue('painSlider', 'painValue');
-    updateSliderValue('healthSlider', 'healthValue');
-    
-    // Small reminder for me
-    console.log("TODO: Test all validation functions before submitting");
-};
+        showError(errorId, 'Password is too long
