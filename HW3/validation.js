@@ -11,6 +11,7 @@ Description: External JavaScript file for patient registration form validation (
 
 // ===== ERROR TRACKING OBJECT =====
 // Each field has a true/false flag for errors
+// true = has error, false = no error
 let fieldErrors = {
     firstname: true,
     lastname: true,
@@ -24,7 +25,7 @@ let fieldErrors = {
     username: true,
     password: true,
     confirmpassword: true,
-    ssn: false,
+    ssn: false,  // optional field, so starts as false (no error)
     hipaa: true
 };
 
@@ -78,6 +79,36 @@ function getFieldValue(fieldId) {
     return field ? field.value : '';
 }
 
+// ===== DATE RANGE CALCULATION =====
+
+function setDateRange() {
+    let today = new Date();
+    
+    // Set max date to today
+    let maxDate = today.toISOString().split('T')[0];
+    
+    // Set min date to 120 years ago
+    let minDate = new Date();
+    minDate.setFullYear(today.getFullYear() - 120);
+    let minDateStr = minDate.toISOString().split('T')[0];
+    
+    let dobField = document.getElementById('dob');
+    if (dobField) {
+        dobField.setAttribute('max', maxDate);
+        dobField.setAttribute('min', minDateStr);
+    }
+}
+
+// ===== SLIDER VALUE UPDATE =====
+
+function updateSliderValue(sliderId, displayId) {
+    let slider = document.getElementById(sliderId);
+    let display = document.getElementById(displayId);
+    if (slider && display) {
+        display.textContent = slider.value;
+    }
+}
+
 // ===== SSN AUTO-FORMATTING (NEW FOR HW3) =====
 
 function formatSSN(input) {
@@ -98,7 +129,7 @@ function validateSSN() {
     let errorId = 'ssnError';
     
     if (ssn === '') {
-        showError(errorId, 'SSN is optional but if entered must be valid');
+        clearError(errorId);
         fieldErrors.ssn = false;
         return true;
     } else if (/^\d{3}-\d{2}-\d{4}$/.test(ssn)) {
@@ -112,7 +143,7 @@ function validateSSN() {
     }
 }
 
-// ===== VALIDATION FUNCTIONS (All updated with oninput) =====
+// ===== VALIDATION FUNCTIONS =====
 
 function validateFirstName() {
     let firstName = getFieldValue('firstname');
@@ -195,7 +226,7 @@ function validateEmail() {
     
     // Convert to lowercase automatically
     let emailField = document.getElementById('email');
-    if (emailField) {
+    if (emailField && email !== '') {
         emailField.value = email.toLowerCase();
         email = email.toLowerCase();
     }
@@ -245,7 +276,7 @@ function validateZip() {
         showError(errorId, 'Zip code is required');
         fieldErrors.zip = true;
     } else if (!/^\d{5}$/.test(zip)) {
-        showError(errorId, 'Use 5 digits only (no dashes or letters)');
+        showError(errorId, 'Use 5 digits only');
         fieldErrors.zip = true;
     } else {
         clearError(errorId);
@@ -335,30 +366,3 @@ function validateUsername() {
     } else {
         clearError(errorId);
         fieldErrors.username = false;
-        
-        // Convert to lowercase
-        let usernameField = document.getElementById('username');
-        if (usernameField && usernameField.value !== username.toLowerCase()) {
-            usernameField.value = username.toLowerCase();
-        }
-    }
-    
-    checkFormValidity();
-    return !fieldErrors.username;
-}
-
-function validatePassword() {
-    let password = getFieldValue('password');
-    let confirm = getFieldValue('confirmpassword');
-    let username = getFieldValue('username');
-    let errorId = 'passwordError';
-    
-    if (password === '') {
-        showError(errorId, 'Password is required');
-        fieldErrors.password = true;
-        fieldErrors.confirmpassword = true;
-    } else if (password.length < 8) {
-        showError(errorId, 'Password must be at least 8 characters');
-        fieldErrors.password = true;
-    } else if (password.length > 30) {
-        showError(errorId, 'Password is too long
