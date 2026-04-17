@@ -278,7 +278,7 @@ Description: Patient Registration Form for MIS3371 Homework 3.
           <td class="field-label">Phone</td>
           <td><input type="text" name="ecphone" id="ecphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"></td>
         </tr>
-      </table>
+      </tr>
     </div>
     <!-- End Emergency Contact -->
 
@@ -488,10 +488,12 @@ Description: Patient Registration Form for MIS3371 Homework 3.
 
     <!-- ===== FORM BUTTONS ===== -->
     <div id="form-buttons">
-      <input type="reset" id="btn-clear" value="CLEAR AND START OVER">
-      <button type="button" id="btn-review" onclick="displayReview()">REVIEW INFORMATION</button>
-      <button type="button" id="btn-validate" onclick="validateAllFields()">VALIDATE FORM</button>
-      <input type="submit" id="btn-submit" value="SUBMIT REGISTRATION" disabled>
+      <div class="button-group">
+        <input type="reset" id="btn-clear" class="form-button" value="CLEAR AND START OVER">
+        <button type="button" id="btn-review" class="form-button" onclick="displayReview()">REVIEW INFORMATION</button>
+        <button type="button" id="btn-validate" class="form-button" onclick="validateAllFields()">VALIDATE FORM</button>
+        <input type="submit" id="btn-submit" class="form-button" value="SUBMIT REGISTRATION" disabled>
+      </div>
     </div>
 
   </form>
