@@ -5,101 +5,72 @@ Author: Amit Singh
 Date created: 04/16/2026
 Date last edited: 04/16/2026
 Version: 3.0
-Description: Patient Registration Form for MIS3371 Homework 3. 
-             Collects patient demographic, contact, insurance, medical history, 
-             and account information with REAL-TIME JavaScript validation on the fly.
-             Submit button is disabled until all fields are valid.
+Description: Patient Registration Form for MIS3371 Homework 3.
 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Patient Registration Form - CarePoint Medical Center</title>
-  <!-- External CSS file -->
   <link href="style.css" rel="stylesheet" type="text/css">
-  <!-- External JavaScript file -->
   <script src="validation.js" defer></script>
 </head>
 
 <body>
 
-<!-- ===================== HEADER / BANNER ===================== -->
 <div id="banner">
-  <!-- Logo using image file -->
   <div id="logo">
-    <img src="logo.png" alt="CarePoint Medical Logo" width="60" height="60">
+    <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="30" r="28" fill="#ffffff" stroke="#1a5276" stroke-width="2"/>
+      <rect x="26" y="14" width="8" height="32" fill="#1a5276" rx="2"/>
+      <rect x="14" y="26" width="32" height="8" fill="#1a5276" rx="2"/>
+    </svg>
   </div>
-  
   <div id="banner-text">
     <h1>CarePoint Medical Center</h1>
     <p id="tagline">We Get You Right, Our Priority Since 2026</p>
   </div>
-  
   <div id="banner-date">
-    <!-- Dynamic date using JavaScript -->
     <p id="today-date"></p>
     <script>
       var now = new Date();
-      var days = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-      var months = new Array("January", "February", "March", "April", "May", "June", "July", 
-                   "August", "September", "October", "November", "December");
-      var dayName = days[now.getDay()];
-      var monthName = months[now.getMonth()];
-      var dateNum = now.getDate();
-      var year = now.getFullYear();
-      
-      document.getElementById("today-date").innerHTML = 
-        "Today is: " + dayName + ", " + monthName + " " + dateNum + ", " + year;
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      var months = ["January", "February", "March", "April", "May", "June", "July", 
+                   "August", "September", "October", "November", "December"];
+      document.getElementById("today-date").innerHTML = "Today is: " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
     </script>
   </div>
 </div>
-<!-- End Banner -->
 
-<!-- ===================== MAIN CONTENT ===================== -->
 <div id="main-content">
-
   <h2 id="form-title">Patient Registration Form</h2>
   <p class="form-instruction">* Required fields</p>
 
   <form id="registrationForm" action="thankyou.html">
 
-    <!-- ===== PERSONAL INFORMATION ===== -->
     <div class="form-section">
       <h3 class="section-heading">Personal Information</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
-
-        <!-- First Name, MI, Last Name -->
         <tr>
-          <td class="field-label" width="15%">First Name *</td>
-          <td width="25%">
+          <td class="field-label">First Name *</td>
+          <td>
             <input type="text" name="firstname" id="firstname" maxlength="30" size="20" required
-                   title="Enter your first name (letters, apostrophes and dashes only, 1-30 characters)"
-                   oninput="validateFirstName()"
-                   onblur="validateFirstName()">
+                   oninput="validateFirstName()" onblur="validateFirstName()">
             <div class="error-container" id="firstnameError"></div>
           </td>
-          <td class="field-label" width="5%">MI</td>
-          <td width="10%">
-            <input type="text" name="mi" id="mi" maxlength="1" size="3"
-                   title="Middle initial (1 letter only)">
-          </td>
-          <td class="field-label" width="15%">Last Name *</td>
-          <td width="30%">
+          <td class="field-label">MI</td>
+          <td><input type="text" name="mi" id="mi" maxlength="1" size="3"></td>
+          <td class="field-label">Last Name *</td>
+          <td>
             <input type="text" name="lastname" id="lastname" maxlength="30" size="20" required
-                   title="Enter your last name (letters, apostrophes and dashes only)"
-                   oninput="validateLastName()"
-                   onblur="validateLastName()">
+                   oninput="validateLastName()" onblur="validateLastName()">
             <div class="error-container" id="lastnameError"></div>
           </td>
         </tr>
-
-        <!-- Date of Birth and Gender -->
         <tr>
           <td class="field-label">Date of Birth *</td>
           <td colspan="2">
             <input type="date" name="dob" id="dob" required
-                   title="Date of birth (must be between 120 years ago and today)"
-                   oninput="validateBirthDate()"
-                   onblur="validateBirthDate()">
+                   oninput="validateBirthDate()" onblur="validateBirthDate()">
             <div class="error-container" id="dobError"></div>
           </td>
           <td class="field-label">Gender</td>
@@ -109,150 +80,84 @@ Description: Patient Registration Form for MIS3371 Homework 3.
             <input type="radio" name="gender" value="other"> Other
           </td>
         </tr>
-
-        <!-- Social Security with auto-formatting -->
         <tr>
           <td class="field-label">Social Security #</td>
           <td colspan="5">
             <input type="password" name="ssn" id="ssn" maxlength="11" size="15" placeholder="XXX-XX-XXXX"
-                   title="Enter 9 digit Social Security number (will auto-format with dashes)"
-                   oninput="formatSSN(this)"
-                   onblur="validateSSN()">
+                   oninput="formatSSN(this)" onblur="validateSSN()">
             <div class="error-container" id="ssnError"></div>
-            <span style="font-size: 11px; color: #666666;">(hidden for security)</span>
           </td>
         </tr>
-
       </table>
     </div>
-    <!-- End Personal Information -->
 
-    <!-- ===== CONTACT INFORMATION ===== -->
     <div class="form-section">
       <h3 class="section-heading">Contact Information</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
-
-        <!-- Address Line 1 & 2 -->
         <tr>
           <td class="field-label">Address Line 1 *</td>
           <td colspan="3">
             <input type="text" name="address1" id="address1" maxlength="30" size="35" required
-                   title="Street address (2-30 characters)"
-                   oninput="validateAddress()"
-                   onblur="validateAddress()">
+                   oninput="validateAddress()" onblur="validateAddress()">
             <div class="error-container" id="addressError"></div>
           </td>
           <td class="field-label">Address Line 2</td>
-          <td>
-            <input type="text" name="address2" id="address2" maxlength="30" size="25"
-                   title="Apartment, suite, etc. (optional)">
-          </td>
+          <td><input type="text" name="address2" id="address2" maxlength="30" size="25"></td>
         </tr>
-
-        <!-- City, State, Zip -->
         <tr>
           <td class="field-label">City *</td>
           <td>
             <input type="text" name="city" id="city" maxlength="30" size="20" required
-                   title="City name (2-30 characters)"
-                   oninput="validateCity()"
-                   onblur="validateCity()">
+                   oninput="validateCity()" onblur="validateCity()">
             <div class="error-container" id="cityError"></div>
           </td>
           <td class="field-label">State *</td>
           <td>
-            <select name="state" id="state" required title="Select your state" onchange="validateState()">
+            <select name="state" id="state" required onchange="validateState()">
               <option value="">Select State</option>
-              <option value="AL">Alabama</option>
-              <option value="AK">Alaska</option>
-              <option value="AZ">Arizona</option>
-              <option value="AR">Arkansas</option>
-              <option value="CA">California</option>
-              <option value="CO">Colorado</option>
-              <option value="CT">Connecticut</option>
-              <option value="DE">Delaware</option>
-              <option value="DC">District of Columbia</option>
-              <option value="FL">Florida</option>
-              <option value="GA">Georgia</option>
-              <option value="HI">Hawaii</option>
-              <option value="ID">Idaho</option>
-              <option value="IL">Illinois</option>
-              <option value="IN">Indiana</option>
-              <option value="IA">Iowa</option>
-              <option value="KS">Kansas</option>
-              <option value="KY">Kentucky</option>
-              <option value="LA">Louisiana</option>
-              <option value="ME">Maine</option>
-              <option value="MD">Maryland</option>
-              <option value="MA">Massachusetts</option>
-              <option value="MI">Michigan</option>
-              <option value="MN">Minnesota</option>
-              <option value="MS">Mississippi</option>
-              <option value="MO">Missouri</option>
-              <option value="MT">Montana</option>
-              <option value="NE">Nebraska</option>
-              <option value="NV">Nevada</option>
-              <option value="NH">New Hampshire</option>
-              <option value="NJ">New Jersey</option>
-              <option value="NM">New Mexico</option>
-              <option value="NY">New York</option>
-              <option value="NC">North Carolina</option>
-              <option value="ND">North Dakota</option>
-              <option value="OH">Ohio</option>
-              <option value="OK">Oklahoma</option>
-              <option value="OR">Oregon</option>
-              <option value="PA">Pennsylvania</option>
-              <option value="RI">Rhode Island</option>
-              <option value="SC">South Carolina</option>
-              <option value="SD">South Dakota</option>
-              <option value="TN">Tennessee</option>
-              <option value="TX">Texas</option>
-              <option value="UT">Utah</option>
-              <option value="VT">Vermont</option>
-              <option value="VA">Virginia</option>
-              <option value="WA">Washington</option>
-              <option value="WV">West Virginia</option>
-              <option value="WI">Wisconsin</option>
-              <option value="WY">Wyoming</option>
+              <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option>
+              <option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option>
+              <option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option>
+              <option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option>
+              <option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option>
+              <option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option>
+              <option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
             </select>
             <div class="error-container" id="stateError"></div>
           </td>
           <td class="field-label">Zip Code *</td>
           <td>
             <input type="text" name="zip" id="zip" maxlength="10" size="10" required
-                   title="Enter 5-digit zip code"
-                   oninput="validateZip()"
-                   onblur="validateZip()">
+                   oninput="validateZip()" onblur="validateZip()">
             <div class="error-container" id="zipError"></div>
           </td>
         </tr>
-
-        <!-- Phone & Email -->
         <tr>
           <td class="field-label">Home Phone</td>
-          <td>
-            <input type="text" name="homephone" id="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"
-                   title="Format: (XXX) XXX-XXXX">
-          </td>
+          <td><input type="text" name="homephone" id="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"></td>
           <td class="field-label">Cell Phone *</td>
           <td>
             <input type="text" name="cellphone" id="cellphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required
-                   title="Format: (XXX) XXX-XXXX"
-                   oninput="validatePhone()"
-                   onblur="validatePhone()">
+                   oninput="validatePhone()" onblur="validatePhone()">
             <div class="error-container" id="phoneError"></div>
           </td>
           <td class="field-label">Email *</td>
           <td>
             <input type="email" name="email" id="email" size="25" required placeholder="name@domain.com"
-                   title="Format: name@domain.com (e.g., john.smith@email.com)"
-                   oninput="validateEmail()"
-                   onblur="validateEmail()">
+                   oninput="validateEmail()" onblur="validateEmail()">
             <div class="error-container" id="emailError"></div>
           </td>
         </tr>
-
-        <!-- Preferred Contact Method -->
         <tr>
           <td class="field-label">Preferred Contact</td>
           <td colspan="5">
@@ -261,12 +166,9 @@ Description: Patient Registration Form for MIS3371 Homework 3.
             <input type="radio" name="contact" value="text"> Text Message
           </td>
         </tr>
-
       </table>
     </div>
-    <!-- End Contact Information -->
 
-    <!-- ===== EMERGENCY CONTACT ===== -->
     <div class="form-section">
       <h3 class="section-heading">Emergency Contact</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -278,25 +180,19 @@ Description: Patient Registration Form for MIS3371 Homework 3.
           <td class="field-label">Phone</td>
           <td><input type="text" name="ecphone" id="ecphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"></td>
         </tr>
-      </tr>
+      </table>
     </div>
-    <!-- End Emergency Contact -->
 
-    <!-- ===== INSURANCE INFORMATION ===== -->
     <div class="form-section">
       <h3 class="section-heading">Insurance Information</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
-
-        <!-- Do you have insurance? -->
         <tr>
           <td class="field-label">Do you have insurance? *</td>
           <td colspan="5">
-            <input type="radio" name="hasinsurance" value="yes" required> Yes
-            <input type="radio" name="hasinsurance" value="no" required> No
+            <input type="radio" name="hasinsurance" value="yes"> Yes
+            <input type="radio" name="hasinsurance" value="no"> No
           </td>
         </tr>
-
-        <!-- Insurance details -->
         <tr>
           <td class="field-label">Insurance Company</td>
           <td><input type="text" name="inscompany" maxlength="40" size="22"></td>
@@ -307,36 +203,22 @@ Description: Patient Registration Form for MIS3371 Homework 3.
         </tr>
       </table>
     </div>
-    <!-- End Insurance Information -->
 
-    <!-- ===== MEDICAL HISTORY ===== -->
     <div class="form-section">
       <h3 class="section-heading">Medical History</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
-
-        <!-- Primary Care Physician -->
         <tr>
           <td class="field-label">Primary Care Physician</td>
-          <td colspan="5">
-            <input type="text" name="pcp" maxlength="50" size="45" placeholder="Doctor's name">
-          </td>
+          <td colspan="5"><input type="text" name="pcp" maxlength="50" size="45" placeholder="Doctor's name"></td>
         </tr>
-
-        <!-- Current Medications & Allergies -->
         <tr>
           <td class="field-label" style="vertical-align: top;">Current Medications</td>
-          <td colspan="2">
-            <textarea name="medications" rows="4" cols="30" placeholder="List all medications you currently take"></textarea>
-          </td>
+          <td colspan="2"><textarea name="medications" rows="4" cols="30" placeholder="List all medications"></textarea></td>
           <td class="field-label" style="vertical-align: top;">Allergies</td>
-          <td colspan="2">
-            <textarea name="allergies" rows="4" cols="25" placeholder="List any allergies"></textarea>
-          </td>
+          <td colspan="2"><textarea name="allergies" rows="4" cols="25" placeholder="List any allergies"></textarea></td>
         </tr>
-
-        <!-- Previous Illnesses - Checkboxes -->
         <tr>
-          <td colspan="6" style="font-weight: bold; padding-top: 10px;">Check all previous illnesses/conditions that apply:</td>
+          <td colspan="6" style="font-weight: bold;">Check all previous illnesses/conditions that apply:</td>
         </tr>
         <tr>
           <td colspan="6">
@@ -348,10 +230,8 @@ Description: Patient Registration Form for MIS3371 Homework 3.
             <input type="checkbox" name="illness" value="hypertension"> Hypertension
           </td>
         </tr>
-
-        <!-- Immunization History - Checkboxes -->
         <tr>
-          <td colspan="6" style="font-weight: bold; padding-top: 10px;">Immunization History - Check all that apply:</td>
+          <td colspan="6" style="font-weight: bold;">Immunization History - Check all that apply:</td>
         </tr>
         <tr>
           <td colspan="6">
@@ -363,57 +243,38 @@ Description: Patient Registration Form for MIS3371 Homework 3.
             <input type="checkbox" name="vaccine" value="hepb"> Hepatitis B
           </td>
         </tr>
-
       </table>
     </div>
-    <!-- End Medical History -->
 
-    <!-- ===== CURRENT HEALTH STATUS ===== -->
     <div class="form-section">
       <h3 class="section-heading">Current Health Status</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
-
-        <!-- Chief Complaint / Reason for Visit -->
         <tr>
           <td class="field-label" style="vertical-align: top;">Reason for Visit</td>
-          <td colspan="5">
-            <textarea name="chiefcomplaint" rows="3" cols="55" placeholder="Please describe why you are visiting today"></textarea>
-          </td>
+          <td colspan="5"><textarea name="chiefcomplaint" rows="3" cols="55" placeholder="Why are you visiting today?"></textarea></td>
         </tr>
-
-        <!-- Current Symptoms -->
         <tr>
           <td class="field-label" style="vertical-align: top;">Current Symptoms</td>
-          <td colspan="5">
-            <textarea name="symptoms" rows="4" cols="55" placeholder="Describe any symptoms you are experiencing..."></textarea>
-          </td>
+          <td colspan="5"><textarea name="symptoms" rows="4" cols="55" placeholder="Describe your symptoms"></textarea></td>
         </tr>
-
-        <!-- Pain Level Slider with dynamic value display -->
         <tr>
           <td class="field-label">Current Pain Level</td>
           <td colspan="5">
-            <span style="font-size: 11px;">0 = No Pain</span>
-            <input type="range" name="painlevel" min="0" max="10" value="5" 
-                   id="painSlider" oninput="updateSliderValue('painSlider', 'painValue')">
-            <span style="font-size: 11px;">10 = Worst Pain</span>
-            &nbsp; Value: <strong><span id="painValue">5</span></strong>
+            <span>0 = No Pain</span>
+            <input type="range" name="painlevel" min="0" max="10" value="5" id="painSlider" oninput="updateSliderValue('painSlider', 'painValue')">
+            <span>10 = Worst Pain</span>
+            Value: <strong><span id="painValue">5</span></strong>
           </td>
         </tr>
-
-        <!-- Overall Health Rating Slider with dynamic value display -->
         <tr>
           <td class="field-label">Overall Health Rating</td>
           <td colspan="5">
-            <span style="font-size: 11px;">1 = Poor</span>
-            <input type="range" name="healthrating" min="1" max="10" value="5"
-                   id="healthSlider" oninput="updateSliderValue('healthSlider', 'healthValue')">
-            <span style="font-size: 11px;">10 = Excellent</span>
-            &nbsp; Value: <strong><span id="healthValue">5</span></strong>
+            <span>1 = Poor</span>
+            <input type="range" name="healthrating" min="1" max="10" value="5" id="healthSlider" oninput="updateSliderValue('healthSlider', 'healthValue')">
+            <span>10 = Excellent</span>
+            Value: <strong><span id="healthValue">5</span></strong>
           </td>
         </tr>
-
-        <!-- Smoking Status -->
         <tr>
           <td class="field-label">Do you smoke?</td>
           <td colspan="5">
@@ -422,34 +283,24 @@ Description: Patient Registration Form for MIS3371 Homework 3.
             <input type="radio" name="smoke" value="former"> Former Smoker
           </td>
         </tr>
-
       </table>
     </div>
-    <!-- End Current Health Status -->
 
-    <!-- ===== PATIENT PORTAL ACCOUNT ===== -->
     <div class="form-section">
       <h3 class="section-heading">Create Your Patient Portal Account</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
-
-        <!-- Username - separate from email -->
         <tr>
           <td class="field-label">Username *</td>
           <td colspan="5">
             <input type="text" name="username" id="username" maxlength="30" size="22" required
-                   title="Start with a letter, 5-30 characters, no spaces. Use letters, numbers, underscore, or dash"
-                   oninput="validateUsername()"
-                   onblur="validateUsername()">
+                   oninput="validateUsername()" onblur="validateUsername()">
             <div class="error-container" id="usernameError"></div>
           </td>
         </tr>
-
-        <!-- Password fields -->
         <tr>
           <td class="field-label">Password *</td>
           <td colspan="2">
             <input type="password" name="password" id="password" minlength="8" size="20" required
-                   title="8-30 characters, must include uppercase, lowercase, number, and special character (!@#$%^&*)"
                    oninput="validatePassword()">
             <div class="error-container" id="passwordError"></div>
           </td>
@@ -460,18 +311,15 @@ Description: Patient Registration Form for MIS3371 Homework 3.
             <div class="error-container" id="confirmError"></div>
           </td>
         </tr>
-
       </table>
     </div>
-    <!-- End Patient Portal Account -->
 
-    <!-- ===== CONSENTS AND ACKNOWLEDGMENTS ===== -->
     <div class="form-section">
       <h3 class="section-heading">Consents and Acknowledgments</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tr>
           <td colspan="6">
-            <input type="checkbox" name="hipaa" id="hipaaCheckbox" required onchange="validateHipaa()">
+            <input type="checkbox" name="hipaa" id="hipaaCheckbox" onchange="validateHipaa()">
             I acknowledge receipt of HIPAA privacy practices *
             <div class="error-container" id="hipaaError"></div>
           </td>
@@ -484,9 +332,7 @@ Description: Patient Registration Form for MIS3371 Homework 3.
         </tr>
       </table>
     </div>
-    <!-- End Consents -->
 
-    <!-- ===== FORM BUTTONS ===== -->
     <div id="form-buttons">
       <div class="button-group">
         <input type="reset" id="btn-clear" class="form-button" value="CLEAR AND START OVER">
@@ -497,43 +343,33 @@ Description: Patient Registration Form for MIS3371 Homework 3.
     </div>
 
   </form>
-  <!-- End Form -->
 
-  <!-- ===== REVIEW AREA ===== -->
   <div id="review-area" style="display: none; margin-top: 30px; padding: 20px; border: 2px solid #0066cc; background-color: #f9f9f9;">
     <h3 style="text-align: center; color: #003399;">PLEASE REVIEW THIS INFORMATION</h3>
     <div id="review-content"></div>
   </div>
 
 </div>
-<!-- End Main Content -->
 
-<!-- ===================== FOOTER ===================== -->
 <div id="footer">
   <div id="footer-left">
     <p><strong>CarePoint Medical Center</strong></p>
     <p>123 Main Street</p>
     <p>Houston, TX 77001</p>
-    <p>Phone: (123) 345-5678</p>
   </div>
-  
   <div id="footer-center">
-    <!-- Clickable button -->
-    <button id="contact-btn" onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (123) 345-5678')">
-      CONTACT US
-    </button>
+    <button id="contact-btn" onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (713) 555-0100')">CONTACT US</button>
   </div>
-  
   <div id="footer-right">
-    <p>&copy; 2026 CarePoint Medical Center. All rights reserved</p>
+    <p>&copy; 2026 CarePoint Medical Center</p>
   </div>
 </div>
-<!-- End Footer -->
+
+<script>
+// Simple test to make sure JavaScript is working
+console.log("Page loaded - JavaScript is working");
+alert("If you see this message, JavaScript is working!");
+</script>
 
 </body>
 </html>
-<!--
-  END OF FILE: homework3.html
-  Author: Amit Singh
-  Version: 3.0
--->
