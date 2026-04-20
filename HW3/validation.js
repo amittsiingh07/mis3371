@@ -5,13 +5,9 @@ Date created: 04/16/2026
 Date last edited: 04/16/2026
 Version: 3.0
 Description: External JavaScript file for patient registration form validation (Homework 3).
-             Handles REAL-TIME validation on input, error tracking, submit button enable/disable,
-             SSN auto-formatting, email lowercase conversion, and form submission.
 */
 
 // ===== ERROR TRACKING OBJECT =====
-// Each field has a true/false flag for errors
-// true = has error, false = no error
 let fieldErrors = {
     firstname: true,
     lastname: true,
@@ -25,7 +21,7 @@ let fieldErrors = {
     username: true,
     password: true,
     confirmpassword: true,
-    ssn: false,  // optional field, so starts as false (no error)
+    ssn: false,
     hipaa: true
 };
 
@@ -55,7 +51,7 @@ function checkFormValidity() {
     for (let field in fieldErrors) {
         if (fieldErrors[field] === true) {
             hasErrors = true;
-            break;
+            console.log("Field with error:", field); // Debug - shows which field is causing error
         }
     }
     
@@ -79,15 +75,11 @@ function getFieldValue(fieldId) {
     return field ? field.value : '';
 }
 
-// ===== DATE RANGE CALCULATION =====
+// ===== DATE RANGE =====
 
 function setDateRange() {
     let today = new Date();
-    
-    // Set max date to today
     let maxDate = today.toISOString().split('T')[0];
-    
-    // Set min date to 120 years ago
     let minDate = new Date();
     minDate.setFullYear(today.getFullYear() - 120);
     let minDateStr = minDate.toISOString().split('T')[0];
@@ -99,7 +91,7 @@ function setDateRange() {
     }
 }
 
-// ===== SLIDER VALUE UPDATE =====
+// ===== SLIDER =====
 
 function updateSliderValue(sliderId, displayId) {
     let slider = document.getElementById(sliderId);
@@ -109,17 +101,15 @@ function updateSliderValue(sliderId, displayId) {
     }
 }
 
-// ===== SSN AUTO-FORMATTING (NEW FOR HW3) =====
+// ===== SSN FUNCTIONS =====
 
 function formatSSN(input) {
     let value = input.value.replace(/\D/g, '');
-    
     if (value.length > 3 && value.length <= 5) {
         value = value.slice(0, 3) + '-' + value.slice(3);
     } else if (value.length > 5) {
         value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 9);
     }
-    
     input.value = value;
     validateSSN();
 }
@@ -137,7 +127,7 @@ function validateSSN() {
         fieldErrors.ssn = false;
         return true;
     } else {
-        showError(errorId, 'Format must be XXX-XX-XXXX (9 digits with dashes)');
+        showError(errorId, 'Format must be XXX-XX-XXXX');
         fieldErrors.ssn = true;
         return false;
     }
@@ -152,9 +142,6 @@ function validateFirstName() {
     if (firstName === '') {
         showError(errorId, 'First name is required');
         fieldErrors.firstname = true;
-    } else if (firstName.length > 30) {
-        showError(errorId, 'First name is too long (max 30 characters)');
-        fieldErrors.firstname = true;
     } else if (!/^[A-Za-z'\-\s]+$/.test(firstName)) {
         showError(errorId, 'Only letters, apostrophes and dashes allowed');
         fieldErrors.firstname = true;
@@ -162,7 +149,6 @@ function validateFirstName() {
         clearError(errorId);
         fieldErrors.firstname = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.firstname;
 }
@@ -174,9 +160,6 @@ function validateLastName() {
     if (lastName === '') {
         showError(errorId, 'Last name is required');
         fieldErrors.lastname = true;
-    } else if (lastName.length > 30) {
-        showError(errorId, 'Last name is too long (max 30 characters)');
-        fieldErrors.lastname = true;
     } else if (!/^[A-Za-z'\-\s]+$/.test(lastName)) {
         showError(errorId, 'Only letters, apostrophes and dashes allowed');
         fieldErrors.lastname = true;
@@ -184,7 +167,6 @@ function validateLastName() {
         clearError(errorId);
         fieldErrors.lastname = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.lastname;
 }
@@ -206,16 +188,15 @@ function validateBirthDate() {
     minDate.setFullYear(today.getFullYear() - 120);
     
     if (birthDate > today) {
-        showError(errorId, 'Cannot be born in the future!');
+        showError(errorId, 'Cannot be born in the future');
         fieldErrors.dob = true;
     } else if (birthDate < minDate) {
-        showError(errorId, 'Please verify age (must be under 120 years old)');
+        showError(errorId, 'Must be under 120 years old');
         fieldErrors.dob = true;
     } else {
         clearError(errorId);
         fieldErrors.dob = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.dob;
 }
@@ -224,7 +205,6 @@ function validateEmail() {
     let email = getFieldValue('email');
     let errorId = 'emailError';
     
-    // Convert to lowercase automatically
     let emailField = document.getElementById('email');
     if (emailField && email !== '') {
         emailField.value = email.toLowerCase();
@@ -232,19 +212,15 @@ function validateEmail() {
     }
     
     if (email === '') {
-        showError(errorId, 'Email address is required');
+        showError(errorId, 'Email is required');
         fieldErrors.email = true;
-    } else if (!email.includes('@')) {
-        showError(errorId, 'Email must contain @ symbol');
-        fieldErrors.email = true;
-    } else if (!email.includes('.') || email.indexOf('.') < email.indexOf('@')) {
-        showError(errorId, 'Email must have valid domain (e.g., domain.com)');
+    } else if (!email.includes('@') || !email.includes('.')) {
+        showError(errorId, 'Enter valid email (name@domain.com)');
         fieldErrors.email = true;
     } else {
         clearError(errorId);
         fieldErrors.email = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.email;
 }
@@ -263,7 +239,6 @@ function validatePhone() {
         clearError(errorId);
         fieldErrors.phone = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.phone;
 }
@@ -276,13 +251,12 @@ function validateZip() {
         showError(errorId, 'Zip code is required');
         fieldErrors.zip = true;
     } else if (!/^\d{5}$/.test(zip)) {
-        showError(errorId, 'Use 5 digits only');
+        showError(errorId, 'Enter 5 digits only');
         fieldErrors.zip = true;
     } else {
         clearError(errorId);
         fieldErrors.zip = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.zip;
 }
@@ -294,14 +268,10 @@ function validateAddress() {
     if (address === '') {
         showError(errorId, 'Address is required');
         fieldErrors.address = true;
-    } else if (address.length < 2) {
-        showError(errorId, 'Address must be at least 2 characters');
-        fieldErrors.address = true;
     } else {
         clearError(errorId);
         fieldErrors.address = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.address;
 }
@@ -313,14 +283,10 @@ function validateCity() {
     if (city === '') {
         showError(errorId, 'City is required');
         fieldErrors.city = true;
-    } else if (city.length < 2) {
-        showError(errorId, 'City must be at least 2 characters');
-        fieldErrors.city = true;
     } else {
         clearError(errorId);
         fieldErrors.city = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.city;
 }
@@ -330,13 +296,12 @@ function validateState() {
     let errorId = 'stateError';
     
     if (!state || state.value === '') {
-        showError(errorId, 'Please select a state');
+        showError(errorId, 'Select a state');
         fieldErrors.state = true;
     } else {
         clearError(errorId);
         fieldErrors.state = false;
     }
-    
     checkFormValidity();
     return !fieldErrors.state;
 }
@@ -349,20 +314,151 @@ function validateUsername() {
         showError(errorId, 'Username is required');
         fieldErrors.username = true;
     } else if (username.length < 5) {
-        showError(errorId, 'Username must be at least 5 characters');
-        fieldErrors.username = true;
-    } else if (username.length > 30) {
-        showError(errorId, 'Username is too long (max 30 characters)');
+        showError(errorId, 'Must be at least 5 characters');
         fieldErrors.username = true;
     } else if (!/^[A-Za-z]/.test(username)) {
-        showError(errorId, 'Username must start with a letter');
+        showError(errorId, 'Must start with a letter');
         fieldErrors.username = true;
     } else if (/\s/.test(username)) {
-        showError(errorId, 'Username cannot contain spaces');
-        fieldErrors.username = true;
-    } else if (!/^[A-Za-z][A-Za-z0-9_\-]+$/.test(username)) {
-        showError(errorId, 'Use only letters, numbers, underscore or dash');
+        showError(errorId, 'No spaces allowed');
         fieldErrors.username = true;
     } else {
         clearError(errorId);
         fieldErrors.username = false;
+    }
+    checkFormValidity();
+    return !fieldErrors.username;
+}
+
+function validatePassword() {
+    let password = getFieldValue('password');
+    let confirm = getFieldValue('confirmpassword');
+    let username = getFieldValue('username');
+    let errorId = 'passwordError';
+    let confirmId = 'confirmError';
+    
+    // Password validation
+    if (password === '') {
+        showError(errorId, 'Password is required');
+        fieldErrors.password = true;
+    } else if (password.length < 8) {
+        showError(errorId, 'Must be at least 8 characters');
+        fieldErrors.password = true;
+    } else if (!/[A-Z]/.test(password)) {
+        showError(errorId, 'Need an uppercase letter');
+        fieldErrors.password = true;
+    } else if (!/[a-z]/.test(password)) {
+        showError(errorId, 'Need a lowercase letter');
+        fieldErrors.password = true;
+    } else if (!/[0-9]/.test(password)) {
+        showError(errorId, 'Need a number');
+        fieldErrors.password = true;
+    } else if (!/[!@#$%^&*()\-_+=]/.test(password)) {
+        showError(errorId, 'Need a special character (!@#$%^&*)');
+        fieldErrors.password = true;
+    } else if (password === username && username !== '') {
+        showError(errorId, 'Cannot be same as username');
+        fieldErrors.password = true;
+    } else {
+        clearError(errorId);
+        fieldErrors.password = false;
+    }
+    
+    // Confirm password validation
+    if (confirm === '') {
+        showError(confirmId, 'Please confirm your password');
+        fieldErrors.confirmpassword = true;
+    } else if (password !== confirm) {
+        showError(confirmId, 'Passwords do not match');
+        fieldErrors.confirmpassword = true;
+    } else if (fieldErrors.password === false) {
+        clearError(confirmId);
+        fieldErrors.confirmpassword = false;
+    }
+    
+    checkFormValidity();
+    return !fieldErrors.password && !fieldErrors.confirmpassword;
+}
+
+function validateHipaa() {
+    let hipaaChecked = document.getElementById('hipaaCheckbox').checked;
+    let errorId = 'hipaaError';
+    
+    if (!hipaaChecked) {
+        showError(errorId, 'You must accept HIPAA terms');
+        fieldErrors.hipaa = true;
+    } else {
+        clearError(errorId);
+        fieldErrors.hipaa = false;
+    }
+    checkFormValidity();
+    return !fieldErrors.hipaa;
+}
+
+// ===== VALIDATE ALL FIELDS (for VALIDATE button) =====
+
+function validateAllFields() {
+    console.log("Validating all fields...");
+    
+    validateFirstName();
+    validateLastName();
+    validateBirthDate();
+    validateEmail();
+    validatePhone();
+    validateZip();
+    validateAddress();
+    validateCity();
+    validateState();
+    validateUsername();
+    validatePassword();
+    validateSSN();
+    validateHipaa();
+    
+    checkFormValidity();
+    
+    if (checkFormValidity()) {
+        alert("✓ All fields are valid! You can now submit the form.");
+    } else {
+        alert("✗ Please fix the errors shown in red before submitting.");
+    }
+}
+
+// ===== REVIEW FUNCTION =====
+
+function displayReview() {
+    alert("Review feature - shows all form data");
+    // Your existing displayReview code here
+}
+
+// ===== PAGE LOAD =====
+
+window.onload = function() {
+    console.log("Homework 3 loaded - Submit button should be disabled");
+    
+    setDateRange();
+    updateSliderValue('painSlider', 'painValue');
+    updateSliderValue('healthSlider', 'healthValue');
+    
+    // Run initial validation to show errors
+    validateFirstName();
+    validateLastName();
+    validateBirthDate();
+    validateEmail();
+    validatePhone();
+    validateZip();
+    validateAddress();
+    validateCity();
+    validateState();
+    validateUsername();
+    validatePassword();
+    validateHipaa();
+    
+    // Make sure submit button is disabled
+    let submitBtn = document.getElementById('btn-submit');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.backgroundColor = '#cccccc';
+    }
+    
+    console.log("Initial validation complete. Submit button should be gray.");
+};
