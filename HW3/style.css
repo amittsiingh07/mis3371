@@ -2,11 +2,11 @@
 Program name: style.css
 Author: Amit Singh
 Date created: 02/19/2026
-Date last edited: 03/22/2026
-Version: 2.0
-Description: External stylesheet for patient-form.html (Homework 2).
+Date last edited: 04/16/2026
+Version: 3.0
+Description: External stylesheet for homework3.html (Homework 3).
              Controls appearance of the patient registration form with
-             error messages and review area styling.
+             error messages, review area styling, and proper button states.
 */
 
 /* ===== TAG SELECTORS ===== */
@@ -172,58 +172,7 @@ p {
 #form-buttons {
   text-align: center;
   margin: 20px auto;
-  width: auto;
-  display: inline-block;
   width: 100%;
-}
-
-#btn-clear {
-  background-color: #cccccc;
-  color: #000000;
-  border: 1px solid #666666;
-  padding: 8px 25px 8px 25px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  cursor: pointer;
-  margin-right: 20px;
-}
-
-#btn-review {
-  background-color: #ff9900;
-  color: #ffffff;
-  border: 1px solid #ff9900;
-  padding: 8px 25px 8px 25px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  cursor: pointer;
-  margin-right: 20px;
-}
-
-#btn-review:hover {
-  background-color: #ff6600;
-  border-color: #ff6600;
-}
-
-#btn-submit {
-  background-color: #003399;
-  color: #ffffff;
-  border: 1px solid #003399;
-  padding: 8px 25px 8px 25px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  cursor: pointer;
-}
-
-#btn-clear:hover {
-  background-color: #dddddd;
-}
-
-#btn-submit:hover {
-  background-color: #0066cc;
-  border-color: #0066cc;
 }
 
 #footer {
@@ -303,6 +252,83 @@ p {
 }
 
 
+/* ===== BUTTON STYLES - IMPORTANT FOR HW3 ===== */
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.form-button {
+    background-color: #cccccc;
+    color: #000000;
+    border: 1px solid #666666;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    min-width: 160px;
+    text-align: center;
+}
+
+/* Review button - Orange */
+#btn-review {
+    background-color: #ff9900;
+    color: #ffffff;
+    border: 1px solid #ff9900;
+}
+
+#btn-review:hover {
+    background-color: #ff6600;
+}
+
+/* Validate button - Blue */
+#btn-validate {
+    background-color: #0066cc;
+    color: #ffffff;
+    border: 1px solid #0066cc;
+}
+
+#btn-validate:hover {
+    background-color: #004499;
+}
+
+/* Submit button - DISABLED state (GRAY) */
+#btn-submit:disabled {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    border: 1px solid #999999 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+/* Submit button - ENABLED state (BLUE) */
+#btn-submit:enabled {
+    background-color: #003399 !important;
+    color: #ffffff !important;
+    border: 1px solid #003399 !important;
+    cursor: pointer !important;
+}
+
+#btn-submit:enabled:hover {
+    background-color: #0066cc !important;
+    border-color: #0066cc !important;
+}
+
+/* Clear button */
+#btn-clear {
+    background-color: #cccccc;
+    color: #000000;
+    border: 1px solid #666666;
+}
+
+#btn-clear:hover {
+    background-color: #dddddd;
+}
+
+
 /* ===== CLASS SELECTORS ===== */
 
 .form-section {
@@ -340,12 +366,12 @@ p {
 }
 
 /* Error message styling */
-.error-msg {
-  display: inline-block;
+.error-container {
+  display: block;
   font-size: 11px;
-  color: #ff0000;
-  margin-left: 5px;
-  font-weight: normal;
+  min-height: 18px;
+  margin-top: 3px;
+  margin-bottom: 2px;
 }
 
 /* Input validation styling - visual feedback */
@@ -357,13 +383,6 @@ input:invalid {
 input:valid {
   border: 1px solid #00aa00;
   background-color: #f0fff0;
-}
-
-/* Special styling for password match feedback */
-#passwordError, #confirmError {
-  display: block;
-  font-size: 11px;
-  margin-top: 3px;
 }
 
 /* special class for ssn field - not sure if needed */
