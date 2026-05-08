@@ -142,7 +142,10 @@ function checkWelcomeCookie() {
     if (firstName && firstName !== "") {
         // Returning user
         welcomeMessage.innerHTML = "Welcome back, " + firstName + "! &#128075;";
-        if (notUserBtn) notUserBtn.style.display = "inline-block";
+        if (notUserBtn) {
+            notUserBtn.innerHTML     = "Not " + firstName + "? Click here to start over";
+            notUserBtn.style.display = "inline-block";
+        }
         console.log("Returning user:", firstName);
         // Load their saved form data
         loadAllFormData();
