@@ -1,25 +1,34 @@
 /*
-Program name: style.css
-Author: Amit Singh
-Date created: 02/19/2026
-Date last edited: 05/08/2026
-Version: 4.0
-Description: External stylesheet for patientform.html (Homework 4).
-             Controls appearance of the patient registration form with
-             error messages, review area styling, proper button states,
-             and FIXED/STICKY header and footer for content protection.
+  Program name: style.css
+  Author: Amit Singh
+  Date created: 02/19/2026
+  Date last edited: 05/08/2026
+  Version: 4.0
+  Description: External stylesheet for patientform.html (Homework 4).
+               Includes fixed/sticky header and footer (content protection),
+               form section styles, button states, responsive layout,
+               and iFrame styling.
 */
 
-/* ===== TAG SELECTORS ===== */
+
+/* ============================================================
+   TAG SELECTORS
+   ============================================================ */
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   background-color: #e6f2ff;
   color: #000000;
-  margin: 0px;
-  padding: 0px;
-  /* Add padding to prevent content from hiding under fixed elements */
-  padding-top: 180px;
+  margin: 0;
+  padding: 0;
+  /*
+    HW4 - Content Protection:
+    padding-top pushes the page content below the fixed header.
+    padding-bottom keeps content above the fixed footer.
+    Without these, the header/footer would cover the page content.
+  */
+  padding-top: 185px;
   padding-bottom: 100px;
 }
 
@@ -27,7 +36,7 @@ h1 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 24px;
   color: #ffffff;
-  margin: 0px 0px 0px 0px;
+  margin: 0;
   font-weight: bold;
 }
 
@@ -45,12 +54,10 @@ h3 {
   font-size: 16px;
   margin: 0;
   font-weight: bold;
-  /* might change this color later */
 }
 
 table {
   width: 100%;
-  /* border: 1px solid black;  /* commented out - looked bad */
 }
 
 td {
@@ -58,83 +65,102 @@ td {
   vertical-align: middle;
 }
 
-/* form element styling */
+/* General form element styling */
 input, select, textarea {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;
   border: 1px solid #999999;
-  padding: 4px 4px 4px 4px;
+  padding: 4px;
   background-color: #ffffff;
 }
 
-/* focus effects */
+/* Highlight field when it receives focus */
 input:focus {
   background-color: #ffffcc;
   border: 1px solid #0000ff;
+  outline: none;
 }
 
 select:focus {
   background-color: #ffffcc;
   border: 1px solid #0000ff;
+  outline: none;
 }
 
 textarea:focus {
   background-color: #ffffcc;
   border: 1px solid #0000ff;
+  outline: none;
 }
 
-/* radio and checkbox spacing */
+/* Spacing for radio buttons and checkboxes */
 input[type="radio"], input[type="checkbox"] {
   margin-right: 3px;
   margin-left: 5px;
 }
 
-/* slider styling */
+/* Slider styling - remove default border/background */
 input[type="range"] {
   width: 200px;
   border: none;
   background-color: transparent;
+  vertical-align: middle;
 }
 
-/* link styles */
+/* Link styles */
 a {
   color: #003366;
   text-decoration: none;
 }
 
-/* visited links */
 a:visited {
   color: #800080;
 }
 
-/* hover effect */
 a:hover {
   text-decoration: underline;
   color: #ff0000;
 }
 
-/* paragraph styles */
 p {
-  margin: 5px 0px;
+  margin: 5px 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Show a green border on valid inputs, red on invalid */
+input:invalid {
+  border: 1px solid #ff0000;
+  background-color: #fff0f0;
+}
 
-/* ===== ID SELECTORS ===== */
+input:valid {
+  border: 1px solid #00aa00;
+  background-color: #f0fff0;
+}
 
-/* FIXED HEADER - stays at top when scrolling (HW4 content protection) */
+
+/* ============================================================
+   ID SELECTORS
+   ============================================================ */
+
+/*
+  #banner - FIXED HEADER (HW4 Content Protection)
+  position: fixed  => stays at top of the browser window when scrolling
+  top: 0 / left: 0 / right: 0 => spans the full width of the window
+  z-index: 1000 => stays on top of all other page content
+  box-shadow => visual separation between header and content below
+*/
 #banner {
   background-color: #003399;
   color: #ffffff;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   overflow: auto;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  /* height: 80px;  /* removed - didn't work right */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 #logo {
@@ -152,7 +178,7 @@ p {
 #tagline {
   font-size: 12px;
   color: #ccccff;
-  margin: 2px 0px 0px 0px;
+  margin: 2px 0 0 0;
   font-style: italic;
 }
 
@@ -163,10 +189,13 @@ p {
   padding-top: 15px;
   font-size: 13px;
   color: #ffffff;
-  font-weight: normal;
 }
 
-/* Welcome area styling - part of fixed header */
+/*
+  #welcome-area - Cookie welcome message bar inside the fixed header
+  Shown below the logo/title row. Displays "Welcome back" or "Welcome New User"
+  depending on whether a cookie exists from a previous visit.
+*/
 #welcome-area {
   clear: both;
   text-align: center;
@@ -185,28 +214,35 @@ p {
   display: inline-block;
 }
 
+/*
+  #notUserBtn - "Not you? Click here to start over" button
+  Hidden by default. Shown only when a returning user cookie is detected.
+  Clicking it calls clearUserData() which wipes cookie, local storage, and resets form.
+*/
 #notUserBtn {
+  display: none;
   background-color: #ff9900;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 5px 10px;
   margin-left: 15px;
   cursor: pointer;
   border-radius: 3px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
 
 #notUserBtn:hover {
   background-color: #ff6600;
 }
 
-/* Main content area - needs margin top to clear fixed header */
+/* Main content area - centered, white background */
 #main-content {
   width: 900px;
-  margin: 20px auto 20px auto;
-  padding: 10px 15px 10px 15px;
+  margin: 20px auto;
+  padding: 10px 15px;
   background-color: #ffffff;
   border: 1px solid #cccccc;
-  /* No position: relative - allow normal scrolling */
 }
 
 #form-title {
@@ -221,11 +257,22 @@ p {
   width: 100%;
 }
 
-/* FIXED FOOTER - stays at bottom when scrolling (HW4 content protection) */
+#today-date {
+  font-size: 13px;
+  font-weight: normal;
+}
+
+/*
+  #footer - FIXED FOOTER (HW4 Content Protection)
+  position: fixed  => stays at the bottom of the browser window when scrolling
+  bottom: 0 / left: 0 / right: 0 => spans the full width of the window
+  z-index: 1000 => stays on top of all other page content
+  box-shadow => visual separation between footer and content above
+*/
 #footer {
   background-color: #003399;
   color: #ffffff;
-  padding: 15px 20px 15px 20px;
+  padding: 15px 20px;
   overflow: auto;
   font-size: 13px;
   position: fixed;
@@ -233,7 +280,7 @@ p {
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
 
 #footer-left {
@@ -253,6 +300,10 @@ p {
   text-align: right;
 }
 
+#footer p {
+  margin: 3px 0;
+}
+
 #contact-btn {
   background-color: #ffffff;
   color: #003399;
@@ -262,19 +313,18 @@ p {
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
-  /* border-radius: 5px;  /* tried this but didn't like it */
 }
 
 #contact-btn:hover {
   background-color: #ccccff;
 }
 
-#today-date {
-  font-size: 13px;
-  font-weight: normal;
-}
+/* Footer link styles */
+#footer a       { color: #ccccff; }
+#footer a:visited { color: #ffccff; }
+#footer a:hover  { color: #ffffff; text-decoration: underline; }
 
-/* Review area styling */
+/* Review area (shown when REVIEW button is clicked) */
 #review-area {
   display: none;
   margin-top: 30px;
@@ -305,86 +355,97 @@ p {
 }
 
 
-/* ===== BUTTON STYLES ===== */
+/* ============================================================
+   BUTTON STYLES
+   ============================================================ */
 
 .button-group {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
+/* Base style shared by all form buttons */
 .form-button {
-    background-color: #cccccc;
-    color: #000000;
-    border: 1px solid #666666;
-    padding: 8px 20px;
-    font-size: 13px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    min-width: 160px;
-    text-align: center;
-    border-radius: 3px;
+  background-color: #cccccc;
+  color: #000000;
+  border: 1px solid #666666;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  min-width: 160px;
+  text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
-/* Review button - Orange */
-#btn-review {
-    background-color: #ff9900;
-    color: #ffffff;
-    border: 1px solid #ff9900;
-}
-
-#btn-review:hover {
-    background-color: #ff6600;
-}
-
-/* Validate button - Blue */
-#btn-validate {
-    background-color: #0066cc;
-    color: #ffffff;
-    border: 1px solid #0066cc;
-}
-
-#btn-validate:hover {
-    background-color: #004499;
-}
-
-/* Submit button - DISABLED state (GRAY) */
-#btn-submit:disabled {
-    background-color: #cccccc !important;
-    color: #666666 !important;
-    border: 1px solid #999999 !important;
-    cursor: not-allowed !important;
-    opacity: 0.7;
-}
-
-/* Submit button - ENABLED state (BLUE) */
-#btn-submit:enabled {
-    background-color: #003399 !important;
-    color: #ffffff !important;
-    border: 1px solid #003399 !important;
-    cursor: pointer !important;
-}
-
-#btn-submit:enabled:hover {
-    background-color: #0066cc !important;
-    border-color: #0066cc !important;
-}
-
-/* Clear button */
+/* CLEAR button - gray */
 #btn-clear {
-    background-color: #cccccc;
-    color: #000000;
-    border: 1px solid #666666;
+  background-color: #cccccc;
+  color: #000000;
+  border: 1px solid #666666;
 }
 
 #btn-clear:hover {
-    background-color: #dddddd;
+  background-color: #dddddd;
+}
+
+/* REVIEW button - orange */
+#btn-review {
+  background-color: #ff9900;
+  color: #ffffff;
+  border: 1px solid #ff9900;
+}
+
+#btn-review:hover {
+  background-color: #ff6600;
+}
+
+/* VALIDATE button - blue */
+#btn-validate {
+  background-color: #0066cc;
+  color: #ffffff;
+  border: 1px solid #0066cc;
+}
+
+#btn-validate:hover {
+  background-color: #004499;
+}
+
+/*
+  SUBMIT button:
+  - DISABLED (gray) when required fields have errors
+  - ENABLED (dark blue) only when all validations pass
+  The JavaScript in checkFormValidity() controls which state applies.
+*/
+#btn-submit:disabled {
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  border: 1px solid #999999 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
+#btn-submit:enabled {
+  background-color: #003399 !important;
+  color: #ffffff !important;
+  border: 1px solid #003399 !important;
+  cursor: pointer !important;
+}
+
+#btn-submit:enabled:hover {
+  background-color: #0066cc !important;
+  border-color: #0066cc !important;
 }
 
 
-/* ===== CLASS SELECTORS ===== */
+/* ============================================================
+   CLASS SELECTORS
+   ============================================================ */
 
+/* Each section of the form has a border and a blue heading bar */
 .form-section {
   border: 1px solid #cccccc;
   margin-bottom: 20px;
@@ -394,17 +455,19 @@ p {
   overflow: hidden;
 }
 
+/* Blue heading bar at the top of each form section */
 .section-heading {
   background-color: #0066cc;
   color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: bold;
-  padding: 6px 10px 6px 10px;
-  margin: 0px;
+  padding: 6px 10px;
+  margin: 0;
   border-bottom: 1px solid #cccccc;
 }
 
+/* Bold label cells in the table */
 .field-label {
   font-weight: bold;
   font-size: 13px;
@@ -413,6 +476,7 @@ p {
   width: 140px;
 }
 
+/* "* Required fields" note at the top of the form */
 .form-instruction {
   font-size: 12px;
   color: #ff0000;
@@ -421,7 +485,12 @@ p {
   margin-bottom: 20px;
 }
 
-/* Error message styling */
+/*
+  Error message container under each field.
+  - Shows red "x" error message when field is invalid
+  - Shows green checkmark when field is valid
+  min-height keeps the layout from jumping around when messages appear/disappear.
+*/
 .error-container {
   display: block;
   font-size: 11px;
@@ -430,99 +499,77 @@ p {
   margin-bottom: 2px;
 }
 
-/* Input validation styling - visual feedback */
-input:invalid {
-  border: 1px solid #ff0000;
-  background-color: #fff0f0;
-}
-
-input:valid {
-  border: 1px solid #00aa00;
-  background-color: #f0fff0;
-}
-
-/* special class for ssn field - not sure if needed */
-.ssn-field {
-  letter-spacing: 2px;
-}
-
-/* footer link styles */
-#footer a {
-  color: #ccccff;
-}
-
-#footer a:visited {
-  color: #ffccff;
-}
-
-#footer a:hover {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/* username special font */
-input[name="username"] {
-  font-family: Courier New, monospace;
-}
-
-/* Review area table row styling */
-.review-section-header {
-  background-color: #e6f2ff;
-  font-weight: bold;
-}
-
-.review-valid {
-  color: green;
-}
-
-.review-invalid {
-  color: red;
-}
-
-/* Remember me checkbox styling */
+/* Remember me checkbox - a bit more spacing */
 #rememberMe {
   margin-right: 8px;
 }
 
-/* iFrame styling */
-iframe {
-  max-width: 100%;
+/* Username field uses monospace font (looks more "technical") */
+input[name="username"] {
+  font-family: "Courier New", monospace;
 }
 
-/* 
-   extra styles I might need later
-   .highlight {
-     background-color: yellow;
-   }
+/*
+  iFrame styling:
+  - max-width: 100% prevents it from overflowing its container
+  - The border and border-radius are set here instead of inline
 */
+iframe {
+  max-width: 100%;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  display: block;
+  margin: 0 auto;
+}
 
-/* Responsive adjustments for smaller screens */
+/* Caption text shown below the iFrame */
+.iframe-caption {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 8px;
+  text-align: center;
+}
+
+
+/* ============================================================
+   RESPONSIVE DESIGN - for screens narrower than 950px
+   ============================================================ */
+
 @media screen and (max-width: 950px) {
+
+  /* Allow main content to shrink on small screens */
   #main-content {
     width: 95%;
     margin: 20px auto;
   }
-  
+
+  /*
+    The fixed header is taller on small screens because elements wrap.
+    Increase padding-top so content doesn't hide under it.
+  */
   body {
-    padding-top: 200px;
+    padding-top: 220px;
   }
-  
+
+  /* Allow labels to wrap instead of staying on one line */
   .field-label {
     white-space: normal;
     width: auto;
   }
-  
+
+  /* Stack buttons vertically on small screens */
   .button-group {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
-  
+
   .form-button {
     width: 90%;
     margin: 5px 0;
   }
-  
+
+  /* Stack footer columns vertically */
   #footer-left, #footer-center, #footer-right {
     float: none;
     width: 100%;
