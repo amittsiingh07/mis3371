@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <!--
-Program name: patientform.html
-Author: Amit Singh
-Date created: 05/08/2026
-Date last edited: 05/08/2026
-Version: 4.0
-Description: Patient Registration Form for MIS3371 Homework 4.
-             Added Fetch API, iFrame, fixed header/footer, cookies,
-             local storage, remember me functionality.
+  Program name: patientform.html
+  Author: Amit Singh
+  Date created: 02/19/2026
+  Date last edited: 05/08/2026
+  Version: 4.0
+  Description: Patient Registration Form for MIS3371 Homework 4.
+               Added iFrame, fixed header/footer, cookies,
+               local storage, and remember me functionality.
 -->
 <html lang="en">
 <head>
@@ -19,7 +19,10 @@ Description: Patient Registration Form for MIS3371 Homework 4.
 
 <body>
 
+<!-- ===== FIXED HEADER (HW4: stays at top when scrolling) ===== -->
 <div id="banner">
+
+  <!-- Logo (SVG cross symbol) -->
   <div id="logo">
     <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
       <circle cx="30" cy="30" r="28" fill="#ffffff" stroke="#1a5276" stroke-width="2"/>
@@ -27,74 +30,106 @@ Description: Patient Registration Form for MIS3371 Homework 4.
       <rect x="14" y="26" width="32" height="8" fill="#1a5276" rx="2"/>
     </svg>
   </div>
+
+  <!-- Center: clinic name and tagline -->
   <div id="banner-text">
     <h1>CarePoint Medical Center</h1>
     <p id="tagline">We Get You Right, Our Priority Since 2026</p>
   </div>
+
+  <!-- Right side: today's date (built with JavaScript) -->
   <div id="banner-date">
     <p id="today-date"></p>
     <script>
-      var now = new Date();
-      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      var months = ["January", "February", "March", "April", "May", "June", "July", 
-                   "August", "September", "October", "November", "December"];
-      document.getElementById("today-date").innerHTML = "Today is: " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+      // Build and display the current date in the header
+      var now    = new Date();
+      var days   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      var months = ["January","February","March","April","May","June",
+                    "July","August","September","October","November","December"];
+      document.getElementById("today-date").innerHTML =
+        "Today is: " + days[now.getDay()] + ", " +
+        months[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
     </script>
   </div>
-  <!-- Welcome message area for cookies -->
-  <div id="welcome-area" style="clear: both; text-align: center; padding: 10px; background-color: #002266; margin-top: 10px; border-radius: 5px;">
-    <p id="welcomeMessage" style="color: #ccccff; font-size: 14px; margin: 0; display: inline-block;">Loading...</p>
-    <button id="notUserBtn" style="display: none; background-color: #ff9900; color: white; border: none; padding: 5px 10px; margin-left: 15px; cursor: pointer; border-radius: 3px;" onclick="clearUserData()">Not you? Click here to start over</button>
-  </div>
-</div>
 
+  <!--
+    Welcome message area (HW4 - Cookie feature):
+    - Shows "Welcome back, [Name]!" if a cookie from a previous visit exists
+    - Shows "Welcome New User!" if no cookie is found
+    - The "Not you?" button only appears for returning users
+  -->
+  <div id="welcome-area">
+    <p id="welcomeMessage">Loading...</p>
+    <button id="notUserBtn" onclick="clearUserData()">Not you? Click here to start over</button>
+  </div>
+
+</div><!-- end #banner -->
+
+
+<!-- ===== MAIN CONTENT AREA ===== -->
 <div id="main-content">
+
   <h2 id="form-title">Patient Registration Form</h2>
   <p class="form-instruction">* Required fields</p>
 
   <form id="registrationForm" action="thankyou.html">
 
+    <!-- ===== SECTION 1: PERSONAL INFORMATION ===== -->
     <div class="form-section">
       <h3 class="section-heading">Personal Information</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+
+        <!-- Row 1: First name, MI, last name -->
         <tr>
           <td class="field-label">First Name *</td>
           <td>
-            <input type="text" name="firstname" id="firstname" maxlength="30" size="20" required
-                   oninput="validateFirstName(); saveToLocalStorage();" onblur="validateFirstName()">
+            <input type="text" name="firstname" id="firstname"
+                   maxlength="30" size="20" required
+                   oninput="validateFirstName();" onblur="validateFirstName()">
             <div class="error-container" id="firstnameError"></div>
           </td>
           <td class="field-label">MI</td>
-          <td><input type="text" name="mi" id="mi" maxlength="1" size="3" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="mi" id="mi"
+                   maxlength="1" size="3" oninput="saveToLocalStorage()">
+          </td>
           <td class="field-label">Last Name *</td>
           <td>
-            <input type="text" name="lastname" id="lastname" maxlength="30" size="20" required
-                   oninput="validateLastName(); saveToLocalStorage();" onblur="validateLastName()">
+            <input type="text" name="lastname" id="lastname"
+                   maxlength="30" size="20" required
+                   oninput="validateLastName();" onblur="validateLastName()">
             <div class="error-container" id="lastnameError"></div>
           </td>
         </tr>
+
+        <!-- Row 2: Date of birth and gender -->
         <tr>
           <td class="field-label">Date of Birth *</td>
           <td colspan="2">
             <input type="date" name="dob" id="dob" required
-                   oninput="validateBirthDate(); saveToLocalStorage();" onblur="validateBirthDate()">
+                   oninput="validateBirthDate();" onblur="validateBirthDate()">
             <div class="error-container" id="dobError"></div>
           </td>
           <td class="field-label">Gender</td>
           <td colspan="2">
-            <input type="radio" name="gender" value="male" onchange="saveToLocalStorage()"> Male
+            <input type="radio" name="gender" value="male"   onchange="saveToLocalStorage()"> Male
             <input type="radio" name="gender" value="female" onchange="saveToLocalStorage()"> Female
-            <input type="radio" name="gender" value="other" onchange="saveToLocalStorage()"> Other
+            <input type="radio" name="gender" value="other"  onchange="saveToLocalStorage()"> Other
           </td>
         </tr>
+
+        <!-- Row 3: SSN (auto-formats as XXX-XX-XXXX while typing) -->
         <tr>
           <td class="field-label">Social Security #</td>
           <td colspan="5">
-            <input type="password" name="ssn" id="ssn" maxlength="11" size="15" placeholder="XXX-XX-XXXX"
-                   oninput="formatSSN(this); saveToLocalStorage();" onblur="validateSSN()">
+            <input type="password" name="ssn" id="ssn"
+                   maxlength="11" size="15" placeholder="XXX-XX-XXXX"
+                   oninput="formatSSN(this);" onblur="validateSSN()">
             <div class="error-container" id="ssnError"></div>
           </td>
         </tr>
+
+        <!-- Row 4: Remember Me checkbox (HW4 - triggers cookie + local storage) -->
         <tr>
           <td colspan="6">
             <label>
@@ -103,84 +138,124 @@ Description: Patient Registration Form for MIS3371 Homework 4.
             </label>
           </td>
         </tr>
-      </table>
-    </div>
 
+      </table>
+    </div><!-- end Personal Information -->
+
+
+    <!-- ===== SECTION 2: CONTACT INFORMATION ===== -->
     <div class="form-section">
       <h3 class="section-heading">Contact Information</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+
+        <!-- Row 1: Address lines -->
         <tr>
           <td class="field-label">Address Line 1 *</td>
           <td colspan="3">
-            <input type="text" name="address1" id="address1" maxlength="30" size="35" required
-                   oninput="validateAddress(); saveToLocalStorage();" onblur="validateAddress()">
+            <input type="text" name="address1" id="address1"
+                   maxlength="30" size="35" required
+                   oninput="validateAddress();" onblur="validateAddress()">
             <div class="error-container" id="addressError"></div>
           </td>
           <td class="field-label">Address Line 2</td>
-          <td><input type="text" name="address2" id="address2" maxlength="30" size="25" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="address2" id="address2"
+                   maxlength="30" size="25" oninput="saveToLocalStorage()">
+          </td>
         </tr>
+
+        <!-- Row 2: City, State (fetched), Zip -->
         <tr>
           <td class="field-label">City *</td>
           <td>
-            <input type="text" name="city" id="city" maxlength="30" size="20" required
-                   oninput="validateCity(); saveToLocalStorage();" onblur="validateCity()">
+            <input type="text" name="city" id="city"
+                   maxlength="30" size="20" required
+                   oninput="validateCity();" onblur="validateCity()">
             <div class="error-container" id="cityError"></div>
           </td>
           <td class="field-label">State *</td>
           <td>
-            <select name="state" id="stateSelect" required onchange="validateState(); saveToLocalStorage()">
+            <!-- Options are loaded via the Fetch API from states.html -->
+            <select name="state" id="stateSelect" required
+                    onchange="validateState(); saveToLocalStorage()">
               <option value="">Loading states...</option>
             </select>
             <div class="error-container" id="stateError"></div>
           </td>
           <td class="field-label">Zip Code *</td>
           <td>
-            <input type="text" name="zip" id="zip" maxlength="10" size="10" required
-                   oninput="validateZip(); saveToLocalStorage();" onblur="validateZip()">
+            <input type="text" name="zip" id="zip"
+                   maxlength="10" size="10" required
+                   oninput="validateZip();" onblur="validateZip()">
             <div class="error-container" id="zipError"></div>
           </td>
         </tr>
+
+        <!-- Row 3: Phones and email -->
         <tr>
           <td class="field-label">Home Phone</td>
-          <td><input type="text" name="homephone" id="homephone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="homephone" id="homephone"
+                   maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"
+                   oninput="saveToLocalStorage()">
+          </td>
           <td class="field-label">Cell Phone *</td>
           <td>
-            <input type="text" name="cellphone" id="cellphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required
-                   oninput="validatePhone(); saveToLocalStorage();" onblur="validatePhone()">
+            <input type="text" name="cellphone" id="cellphone"
+                   maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" required
+                   oninput="validatePhone();" onblur="validatePhone()">
             <div class="error-container" id="phoneError"></div>
           </td>
           <td class="field-label">Email *</td>
           <td>
-            <input type="email" name="email" id="email" size="25" required placeholder="name@domain.com"
-                   oninput="validateEmail(); saveToLocalStorage();" onblur="validateEmail()">
+            <input type="email" name="email" id="email"
+                   size="25" required placeholder="name@domain.com"
+                   oninput="validateEmail();" onblur="validateEmail()">
             <div class="error-container" id="emailError"></div>
           </td>
         </tr>
+
+        <!-- Row 4: Preferred contact method -->
         <tr>
           <td class="field-label">Preferred Contact</td>
           <td colspan="5">
             <input type="radio" name="contact" value="phone" onchange="saveToLocalStorage()"> Phone
             <input type="radio" name="contact" value="email" onchange="saveToLocalStorage()"> Email
-            <input type="radio" name="contact" value="text" onchange="saveToLocalStorage()"> Text Message
+            <input type="radio" name="contact" value="text"  onchange="saveToLocalStorage()"> Text Message
           </td>
         </tr>
-      </table>
-    </div>
 
+      </table>
+    </div><!-- end Contact Information -->
+
+
+    <!-- ===== SECTION 3: EMERGENCY CONTACT ===== -->
     <div class="form-section">
       <h3 class="section-heading">Emergency Contact</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tr>
           <td class="field-label">Contact Name *</td>
-          <td><input type="text" name="ecname" id="ecname" maxlength="30" size="22" required oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="ecname" id="ecname"
+                   maxlength="30" size="22" required oninput="saveToLocalStorage()">
+          </td>
           <td class="field-label">Relationship *</td>
-          <td><input type="text" name="ecrelation" id="ecrelation" maxlength="20" size="15" required oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="ecrelation" id="ecrelation"
+                   maxlength="20" size="15" required oninput="saveToLocalStorage()">
+          </td>
           <td class="field-label">Phone</td>
-          <td><input type="text" name="ecphone" id="ecphone" maxlength="14" size="15" placeholder="(XXX) XXX-XXXX" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="ecphone" id="ecphone"
+                   maxlength="14" size="15" placeholder="(XXX) XXX-XXXX"
+                   oninput="saveToLocalStorage()">
+          </td>
         </tr>
       </table>
-    </div>
+    </div><!-- end Emergency Contact -->
 
+
+    <!-- ===== SECTION 4: INSURANCE INFORMATION ===== -->
     <div class="form-section">
       <h3 class="section-heading">Insurance Information</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -188,180 +263,278 @@ Description: Patient Registration Form for MIS3371 Homework 4.
           <td class="field-label">Do you have insurance? *</td>
           <td colspan="5">
             <input type="radio" name="hasinsurance" value="yes" onchange="saveToLocalStorage()"> Yes
-            <input type="radio" name="hasinsurance" value="no" onchange="saveToLocalStorage()"> No
+            <input type="radio" name="hasinsurance" value="no"  onchange="saveToLocalStorage()"> No
           </td>
         </tr>
         <tr>
           <td class="field-label">Insurance Company</td>
-          <td><input type="text" name="inscompany" maxlength="40" size="22" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="inscompany" id="inscompany"
+                   maxlength="40" size="22" oninput="saveToLocalStorage()">
+          </td>
           <td class="field-label">Policy Number</td>
-          <td><input type="text" name="policynum" maxlength="20" size="18" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="policynum" id="policynum"
+                   maxlength="20" size="18" oninput="saveToLocalStorage()">
+          </td>
           <td class="field-label">Group Number</td>
-          <td><input type="text" name="groupnum" maxlength="20" size="15" oninput="saveToLocalStorage()"></td>
+          <td>
+            <input type="text" name="groupnum" id="groupnum"
+                   maxlength="20" size="15" oninput="saveToLocalStorage()">
+          </td>
         </tr>
       </table>
-    </div>
+    </div><!-- end Insurance Information -->
 
+
+    <!-- ===== SECTION 5: MEDICAL HISTORY ===== -->
     <div class="form-section">
       <h3 class="section-heading">Medical History</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+
         <tr>
           <td class="field-label">Primary Care Physician</td>
-          <td colspan="5"><input type="text" name="pcp" maxlength="50" size="45" placeholder="Doctor's name" oninput="saveToLocalStorage()"></td>
+          <td colspan="5">
+            <input type="text" name="pcp" id="pcp"
+                   maxlength="50" size="45" placeholder="Doctor's name"
+                   oninput="saveToLocalStorage()">
+          </td>
         </tr>
+
         <tr>
           <td class="field-label" style="vertical-align: top;">Current Medications</td>
-          <td colspan="2"><textarea name="medications" rows="4" cols="30" placeholder="List all medications" oninput="saveToLocalStorage()"></textarea></td>
+          <td colspan="2">
+            <textarea name="medications" id="medications"
+                      rows="4" cols="30" placeholder="List all medications"
+                      oninput="saveToLocalStorage()"></textarea>
+          </td>
           <td class="field-label" style="vertical-align: top;">Allergies</td>
-          <td colspan="2"><textarea name="allergies" rows="4" cols="25" placeholder="List any allergies" oninput="saveToLocalStorage()"></textarea></td>
+          <td colspan="2">
+            <textarea name="allergies" id="allergies"
+                      rows="4" cols="25" placeholder="List any allergies"
+                      oninput="saveToLocalStorage()"></textarea>
+          </td>
         </tr>
+
+        <!-- Illnesses loaded via Fetch API from illnesses.html -->
         <tr>
-          <td colspan="6" style="font-weight: bold;">Check all previous illnesses/conditions that apply:</td>
+          <td colspan="6" style="font-weight: bold;">
+            Check all previous illnesses/conditions that apply:
+          </td>
         </tr>
         <tr>
           <td colspan="6" id="illnessesContainer">
             Loading illness options...
           </td>
         </tr>
+
+        <!-- Immunizations - hardcoded checkboxes -->
         <tr>
-          <td colspan="6" style="font-weight: bold;">Immunization History - Check all that apply:</td>
+          <td colspan="6" style="font-weight: bold;">
+            Immunization History - Check all that apply:
+          </td>
         </tr>
         <tr>
           <td colspan="6">
-            <input type="checkbox" name="vaccine" value="covid19" onchange="saveToLocalStorage()"> COVID-19
-            <input type="checkbox" name="vaccine" value="flu" onchange="saveToLocalStorage()"> Flu (current year)
-            <input type="checkbox" name="vaccine" value="tetanus" onchange="saveToLocalStorage()"> Tetanus
-            <input type="checkbox" name="vaccine" value="mmr" onchange="saveToLocalStorage()"> MMR
+            <input type="checkbox" name="vaccine" value="covid19"    onchange="saveToLocalStorage()"> COVID-19
+            <input type="checkbox" name="vaccine" value="flu"        onchange="saveToLocalStorage()"> Flu (current year)
+            <input type="checkbox" name="vaccine" value="tetanus"    onchange="saveToLocalStorage()"> Tetanus
+            <input type="checkbox" name="vaccine" value="mmr"        onchange="saveToLocalStorage()"> MMR
             <input type="checkbox" name="vaccine" value="chickenpox" onchange="saveToLocalStorage()"> Chicken Pox
-            <input type="checkbox" name="vaccine" value="hepb" onchange="saveToLocalStorage()"> Hepatitis B
+            <input type="checkbox" name="vaccine" value="hepb"       onchange="saveToLocalStorage()"> Hepatitis B
           </td>
         </tr>
-      </table>
-    </div>
 
+      </table>
+    </div><!-- end Medical History -->
+
+
+    <!-- ===== SECTION 6: CURRENT HEALTH STATUS ===== -->
     <div class="form-section">
       <h3 class="section-heading">Current Health Status</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+
         <tr>
           <td class="field-label" style="vertical-align: top;">Reason for Visit</td>
-          <td colspan="5"><textarea name="chiefcomplaint" rows="3" cols="55" placeholder="Why are you visiting today?" oninput="saveToLocalStorage()"></textarea></td>
+          <td colspan="5">
+            <textarea name="chiefcomplaint" id="chiefcomplaint"
+                      rows="3" cols="55" placeholder="Why are you visiting today?"
+                      oninput="saveToLocalStorage()"></textarea>
+          </td>
         </tr>
+
         <tr>
           <td class="field-label" style="vertical-align: top;">Current Symptoms</td>
-          <td colspan="5"><textarea name="symptoms" rows="4" cols="55" placeholder="Describe your symptoms" oninput="saveToLocalStorage()"></textarea></td>
+          <td colspan="5">
+            <textarea name="symptoms" id="symptoms"
+                      rows="4" cols="55" placeholder="Describe your symptoms"
+                      oninput="saveToLocalStorage()"></textarea>
+          </td>
         </tr>
+
+        <!-- Pain level slider (0-10) -->
         <tr>
           <td class="field-label">Current Pain Level</td>
           <td colspan="5">
             <span>0 = No Pain</span>
-            <input type="range" name="painlevel" min="0" max="10" value="5" id="painSlider" oninput="updateSliderValue('painSlider', 'painValue'); saveToLocalStorage()">
+            <input type="range" name="painlevel" id="painSlider"
+                   min="0" max="10" value="5"
+                   oninput="updateSliderValue('painSlider','painValue'); saveToLocalStorage()">
             <span>10 = Worst Pain</span>
-            Value: <strong><span id="painValue">5</span></strong>
+            &nbsp;Value: <strong><span id="painValue">5</span></strong>
           </td>
         </tr>
+
+        <!-- Health rating slider (1-10) -->
         <tr>
           <td class="field-label">Overall Health Rating</td>
           <td colspan="5">
             <span>1 = Poor</span>
-            <input type="range" name="healthrating" min="1" max="10" value="5" id="healthSlider" oninput="updateSliderValue('healthSlider', 'healthValue'); saveToLocalStorage()">
+            <input type="range" name="healthrating" id="healthSlider"
+                   min="1" max="10" value="5"
+                   oninput="updateSliderValue('healthSlider','healthValue'); saveToLocalStorage()">
             <span>10 = Excellent</span>
-            Value: <strong><span id="healthValue">5</span></strong>
+            &nbsp;Value: <strong><span id="healthValue">5</span></strong>
           </td>
         </tr>
+
         <tr>
           <td class="field-label">Do you smoke?</td>
           <td colspan="5">
-            <input type="radio" name="smoke" value="yes" onchange="saveToLocalStorage()"> Yes
-            <input type="radio" name="smoke" value="no" onchange="saveToLocalStorage()"> No
+            <input type="radio" name="smoke" value="yes"    onchange="saveToLocalStorage()"> Yes
+            <input type="radio" name="smoke" value="no"     onchange="saveToLocalStorage()"> No
             <input type="radio" name="smoke" value="former" onchange="saveToLocalStorage()"> Former Smoker
           </td>
         </tr>
-      </table>
-    </div>
 
+      </table>
+    </div><!-- end Current Health Status -->
+
+
+    <!-- ===== SECTION 7: PATIENT PORTAL ACCOUNT ===== -->
     <div class="form-section">
       <h3 class="section-heading">Create Your Patient Portal Account</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+
         <tr>
           <td class="field-label">Username *</td>
           <td colspan="5">
-            <input type="text" name="username" id="username" maxlength="30" size="22" required
-                   oninput="validateUsername(); saveToLocalStorage();" onblur="validateUsername()">
+            <input type="text" name="username" id="username"
+                   maxlength="30" size="22" required
+                   oninput="validateUsername();" onblur="validateUsername()">
             <div class="error-container" id="usernameError"></div>
           </td>
         </tr>
+
         <tr>
           <td class="field-label">Password *</td>
           <td colspan="2">
-            <input type="password" name="password" id="password" minlength="8" size="20" required
-                   oninput="validatePassword(); saveToLocalStorage();">
+            <input type="password" name="password" id="password"
+                   minlength="8" size="20" required
+                   oninput="validatePassword();">
             <div class="error-container" id="passwordError"></div>
           </td>
           <td class="field-label">Confirm Password *</td>
           <td colspan="2">
-            <input type="password" name="confirmpassword" id="confirmpassword" minlength="8" size="20" required
-                   oninput="validatePassword(); saveToLocalStorage();">
+            <input type="password" name="confirmpassword" id="confirmpassword"
+                   minlength="8" size="20" required
+                   oninput="validatePassword();">
             <div class="error-container" id="confirmError"></div>
           </td>
         </tr>
-      </table>
-    </div>
 
+      </table>
+    </div><!-- end Patient Portal Account -->
+
+
+    <!-- ===== SECTION 8: CONSENTS AND ACKNOWLEDGMENTS ===== -->
     <div class="form-section">
       <h3 class="section-heading">Consents and Acknowledgments</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+
+        <!-- HIPAA checkbox - REQUIRED to enable the submit button -->
         <tr>
           <td colspan="6">
-            <input type="checkbox" name="hipaa" id="hipaaCheckbox" onchange="validateHipaa(); saveToLocalStorage()">
+            <input type="checkbox" name="hipaa" id="hipaaCheckbox"
+                   onchange="validateHipaa(); saveToLocalStorage()">
             I acknowledge receipt of HIPAA privacy practices *
             <div class="error-container" id="hipaaError"></div>
           </td>
         </tr>
+
         <tr>
           <td colspan="6">
-            <input type="checkbox" name="emailsms" onchange="saveToLocalStorage()">
+            <input type="checkbox" name="emailsms" id="emailsms"
+                   onchange="saveToLocalStorage()">
             I consent to receive email/SMS communications
           </td>
         </tr>
-      </table>
-    </div>
 
-    <!-- iFRAME SECTION (NEW FOR HW4) -->
+      </table>
+    </div><!-- end Consents -->
+
+
+    <!-- ===== SECTION 9: IFRAME - HEALTH RESOURCES (HW4 NEW FEATURE) ===== -->
     <div class="form-section">
       <h3 class="section-heading">Health Resources</h3>
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tr>
-          <td style="text-align: center;">
-            <iframe src="https://www.w3schools.com/html/default.asp" 
-                    width="100%" 
-                    height="300" 
-                    title="HTML Tutorial"
-                    style="border: 1px solid #cccccc; border-radius: 5px;">
+          <td style="text-align: center; padding: 10px;">
+
+            <!--
+              iFrame (HW4 Requirement):
+              - src: external health website (MedlinePlus - U.S. National Library of Medicine)
+              - title: required for accessibility (screen readers use this)
+              - width 100%: makes it responsive to the container width
+              - height 350px: tall enough to show useful content
+              NOTE: Some websites block iframes for security reasons.
+                    If you see "refused to connect", that is the website's policy, not a code error.
+            -->
+            <iframe
+              src="https://medlineplus.gov/"
+              width="100%"
+              height="350"
+              title="Health Resources - MedlinePlus">
             </iframe>
-            <p style="font-size: 12px; color: #666666; margin-top: 10px;">Click the link above for free HTML and web development tutorials</p>
+
+            <p class="iframe-caption">
+              Health information provided by MedlinePlus, a service of the
+              U.S. National Library of Medicine.
+            </p>
+
           </td>
         </tr>
       </table>
-    </div>
+    </div><!-- end Health Resources -->
 
+
+    <!-- ===== FORM ACTION BUTTONS ===== -->
     <div id="form-buttons">
       <div class="button-group">
-        <input type="reset" id="btn-clear" class="form-button" value="CLEAR AND START OVER">
-        <button type="button" id="btn-review" class="form-button" onclick="displayReview()">REVIEW INFORMATION</button>
+        <!-- CLEAR: resets the entire form -->
+        <input  type="reset"  id="btn-clear"    class="form-button" value="CLEAR AND START OVER">
+        <!-- REVIEW: shows a summary of entered data below the form -->
+        <button type="button" id="btn-review"   class="form-button" onclick="displayReview()">REVIEW INFORMATION</button>
+        <!-- VALIDATE: runs all validation checks and alerts the user -->
         <button type="button" id="btn-validate" class="form-button" onclick="validateAllFields()">VALIDATE FORM</button>
-        <input type="submit" id="btn-submit" class="form-button" value="SUBMIT REGISTRATION" disabled>
+        <!-- SUBMIT: disabled until all required fields pass validation -->
+        <input  type="submit" id="btn-submit"   class="form-button" value="SUBMIT REGISTRATION" disabled>
       </div>
     </div>
 
-  </form>
+  </form><!-- end #registrationForm -->
 
-  <div id="review-area" style="display: none; margin-top: 30px; padding: 20px; border: 2px solid #0066cc; background-color: #f9f9f9;">
+
+  <!-- Review area (hidden by default, shown when REVIEW button is clicked) -->
+  <div id="review-area">
     <h3 style="text-align: center; color: #003399;">PLEASE REVIEW THIS INFORMATION</h3>
     <div id="review-content"></div>
   </div>
 
-</div>
+</div><!-- end #main-content -->
 
+
+<!-- ===== FIXED FOOTER (HW4: stays at bottom when scrolling) ===== -->
 <div id="footer">
   <div id="footer-left">
     <p><strong>CarePoint Medical Center</strong></p>
@@ -369,16 +542,15 @@ Description: Patient Registration Form for MIS3371 Homework 4.
     <p>Houston, TX 77001</p>
   </div>
   <div id="footer-center">
-    <button id="contact-btn" onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (713) 555-0100')">CONTACT US</button>
+    <button id="contact-btn"
+            onclick="alert('Contact us at: info@carepointmedical.com\nPhone: (713) 555-0100')">
+      CONTACT US
+    </button>
   </div>
   <div id="footer-right">
     <p>&copy; 2026 CarePoint Medical Center</p>
   </div>
-</div>
-
-<script>
-console.log("Page loaded - JavaScript is working for HW4");
-</script>
+</div><!-- end #footer -->
 
 </body>
 </html>
